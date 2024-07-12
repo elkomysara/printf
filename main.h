@@ -5,6 +5,10 @@
 #include <unistd.h>
 
 int _printf(const char *format, ...);
+int handle_char(char c);
+int handle_string(char *str);
+int handle_format(const char *format, va_list args);
 
 #endif /* MAIN_H */
+
 
