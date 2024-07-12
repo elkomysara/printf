@@ -63,7 +63,7 @@ case 'i':
 count += handle_int(va_arg(args, int));
 break;
 case 'u':
-count += handle_unsigned(va_arg(args, unsigned int));
+count += handle_unsigned (va_arg(args, unsigned int));
 break;
 case 'o':
 count += handle_octal(va_arg(args, unsigned int));
