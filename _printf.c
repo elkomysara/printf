@@ -62,6 +62,21 @@ case 'd':
 case 'i':
 count += handle_int(va_arg(args, int));
 break;
+case 'u':
+count += handle_unsigned(va_arg(args, unsigned int));
+break;
+case 'o':
+count += handle_octal(va_arg(args, unsigned int));
+break;
+case 'x':
+count += handle_hex(va_arg(args, unsigned int), 0);
+break;
+case 'X':
+count += handle_hex(va_arg(args, unsigned int), 1);
+break;
+case 'p':
+count += handle_pointer(va_arg(args, void *));
+break;
 default:
 count += write(1, "%", 1);
 count += write(1, p, 1);
@@ -141,3 +156,136 @@ count += write(1, &buffer[i], 1);
 
 return (count);
 }
+
+/**
+* handle_unsigned - Writes an unsigned integer to stdout
+* @n: The unsigned integer to write
+*
+* Return: The number of characters written
+*/
+int handle_unsigned(unsigned int n)
+{
+char buffer[20];
+int count = 0;
+int i = 0;
+
+if (n == 0)
+{
+buffer[i++] = '0';
+}
+else
+{
+while (n > 0)
+{
+buffer[i++] = (n % 10) + '0';
+n /= 10;
+}
+}
+
+while (i--)
+count += write(1, &buffer[i], 1);
+
+return (count);
+}
+
+/**
+* handle_octal - Writes an unsigned integer in octal to stdout
+* @n: The unsigned integer to write
+*
+* Return: The number of characters written
+*/
+int handle_octal(unsigned int n)
+{
+char buffer[20];
+int count = 0;
+int i = 0;
+
+if (n == 0)
+{
+buffer[i++] = '0';
+}
+else
+{
+while (n > 0)
+{
+buffer[i++] = (n % 8) + '0';
+n /= 8;
+}
+}
+
+while (i--)
+count += write(1, &buffer[i], 1);
+
+return (count);
+}
+
+/**
+* handle_hex - Writes an unsigned integer in hexadecimal to stdout
+* @n: The unsigned integer to write
+* @uppercase: Whether to use uppercase letters
+*
+* Return: The number of characters written
+*/
+int handle_hex(unsigned int n, int uppercase)
+{
+char buffer[20];
+int count = 0;
+int i = 0;
+char offset = uppercase ? 'A' - 10 : 'a' - 10;
+
+if (n == 0)
+{
+buffer[i++] = '0';
+}
+else
+{
+while (n > 0)
+{
+int digit = n % 16;
+buffer[i++] = digit < 10 ? digit + '0' : digit + offset;
+n /= 16;
+}
+}
+
+while (i--)
+count += write(1, &buffer[i], 1);
+
+return (count);
+}
+
+/**
+* handle_pointer - Writes a pointer address to stdout
+* @p: The pointer to write
+*
+* Return: The number of characters written
+*/
+int handle_pointer(void *p)
+{
+unsigned long addr = (unsigned long)p;
+char buffer[20];
+int count = 0;
+int i = 0;
+
+buffer[i++] = '0';
+buffer[i++] = 'x';
+
+if (addr == 0)
+{
+buffer[i++] = '0';
+}
+else
+{
+while (addr > 0)
+{
+int digit = addr % 16;
+buffer[i++] = digit < 10 ? digit + '0' : digit + 'a' - 10;
+addr /= 16;
+}
+}
+
+while (i--)
+count += write(1, &buffer[i], 1);
+
+return (count);
+}
+
