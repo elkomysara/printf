@@ -8,6 +8,7 @@ int handle_unsigned(unsigned int n);
 int handle_octal(unsigned int n);
 int handle_hex(unsigned int n, int uppercase);
 int handle_pointer(void *p);
+int handle_binary(unsigned int n);
 
 /**
 * _printf - Produces output according to a format
@@ -76,6 +77,9 @@ count += handle_hex(va_arg(args, unsigned int), 1);
 break;
 case 'p':
 count += handle_pointer(va_arg(args, void *));
+break;
+case 'b':
+count += handle_binary(va_arg(args, unsigned int));
 break;
 default:
 count += write(1, "%", 1);
@@ -289,3 +293,33 @@ count += write(1, &buffer[i], 1);
 return (count);
 }
 
+/**
+* handle_binary - Writes an unsigned integer in binary to stdout
+* @n: The unsigned integer to write
+*
+* Return: The number of characters written
+*/
+int handle_binary(unsigned int n)
+{
+char buffer[32];
+int count = 0;
+int i = 0;
+
+if (n == 0)
+{
+buffer[i++] = '0';
+}
+else
+{
+while (n > 0)
+{
+buffer[i++] = (n % 2) + '0';
+n /= 2;
+}
+}
+
+while (i--)
+count += write(1, &buffer[i], 1);
+
+return (count);
+}

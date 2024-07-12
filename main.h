@@ -9,6 +9,11 @@ int handle_char(char c);
 int handle_string(char *str);
 int handle_format(const char *format, va_list args);
 int handle_int(int n);
+int handle_unsigned(unsigned int n);
+int handle_octal(unsigned int n);
+int handle_hex(unsigned int n, int uppercase);
+int handle_pointer(void *p);
+int handle_binary(unsigned int n);
 
 #endif /* MAIN_H */
 
