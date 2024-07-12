@@ -1,52 +1,59 @@
-#include <stdarg.h>
 #include "main.h"
 
 /**
-* _printf - produces output according to a format
-* @format: format string containing the characters and the specifiers
+* _printf - Produces output according to a format
+* @format: The format string
 *
-* Return: the number of characters printed
+* Return: The number of characters printed (excluding the null byte)
 */
 int _printf(const char *format, ...)
 {
 va_list args;
-int i = 0, count = 0;
-char *str;
+int i = 0, printed_chars = 0;
+int (*handler)(va_list);
+
+if (!format)
+return (-1);
 
 va_start(args, format);
+
 while (format && format[i])
 {
 if (format[i] == '%')
 {
 i++;
+if (format[i] == '\0')
+return (-1);
+handler = NULL;
+
 switch (format[i])
 {
 case 'c':
-count += _putchar(va_arg(args, int));
+handler = handle_char;
 break;
 case 's':
-str = va_arg(args, char *);
-while (*str)
-{
-count += _putchar(*str);
-str++;
-}
+handler = handle_string;
 break;
 case '%':
-count += _putchar('%');
-break;
+printed_chars += handle_percent();
+i++;
+continue;
 default:
-count += _putchar('%');
-count += _putchar(format[i]);
-break;
+printed_chars += write(1, &format[i - 1], 1);
+printed_chars += write(1, &format[i], 1);
+i++;
+continue;
 }
+if (handler)
+printed_chars += handler(args);
 }
 else
 {
-count += _putchar(format[i]);
+printed_chars += write(1, &format[i], 1);
 }
 i++;
 }
+
 va_end(args);
-return (count);
+return (printed_chars);
 }
