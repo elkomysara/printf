@@ -2,58 +2,56 @@
 
 /**
 * _printf - Produces output according to a format
-* @format: The format string
+* @format: A character string composed of zero or more directives
 *
 * Return: The number of characters printed (excluding the null byte)
 */
 int _printf(const char *format, ...)
 {
 va_list args;
-int i = 0, printed_chars = 0;
-int (*handler)(va_list);
+int count = 0;
+const char *p;
 
 if (!format)
 return (-1);
 
 va_start(args, format);
 
-while (format && format[i])
+for (p = format; *p != '\0'; p++)
 {
-if (format[i] == '%')
+if (*p == '%')
 {
-i++;
-if (format[i] == '\0')
-return (-1);
-handler = NULL;
-
-switch (format[i])
+p++;
+if (*p == 'c')
 {
-case 'c':
-handler = handle_char;
-break;
-case 's':
-handler = handle_string;
-break;
-case '%':
-printed_chars += handle_percent();
-i++;
-continue;
-default:
-printed_chars += write(1, &format[i - 1], 1);
-printed_chars += write(1, &format[i], 1);
-i++;
-continue;
+char c = va_arg(args, int);
+count += write(1, &c, 1);
 }
-if (handler)
-printed_chars += handler(args);
+else if (*p == 's')
+{
+char *str = va_arg(args, char *);
+while (*str)
+{
+count += write(1, str++, 1);
+}
+}
+else if (*p == '%')
+{
+count += write(1, "%", 1);
 }
 else
 {
-printed_chars += write(1, &format[i], 1);
+count += write(1, "%", 1);
+count += write(1, p, 1);
 }
-i++;
+}
+else
+{
+count += write(1, p, 1);
+}
 }
 
 va_end(args);
-return (printed_chars);
+return (count);
 }
+
