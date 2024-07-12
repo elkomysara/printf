@@ -1,6 +1,1 @@
-This is a README.md
-"# printf" 
-"# printf" 
-"# printf" 
-"# printf" 
-"# printf" 
+This is a README.md file inside alx-low_level_programming/0x0D-preprocessor
