@@ -19,7 +19,7 @@ int handle_binary(unsigned int n);
 int _printf(const char *format, ...)
 {
 va_list args;
-int count = 0;
+int count;
 
 if (!format)
 return (-1);
