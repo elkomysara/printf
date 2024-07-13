@@ -1,5 +1,5 @@
 #include "main.h"
-
+#include <unistd.h>
 #define BUFFER_SIZE 1024
 
 int handle_char(char c, char *buffer, int *buff_ind);
@@ -107,7 +107,6 @@ buffer_flush(buffer, buff_ind);
 
 return (count);
 }
-
 
 /**
 * handle_char - Writes a character to buffer
@@ -284,7 +283,7 @@ int handle_hex(unsigned int n, int uppercase, char *buffer, int *buff_ind)
 {
 char num_buffer[20];
 int count = 0, i = 0;
-char offset = uppercase ? 'A' - 10 : 'a' - 10;
+char hex_digit;
 
 if (n == 0)
 {
@@ -294,8 +293,11 @@ else
 {
 while (n > 0)
 {
-int digit = n % 16;
-num_buffer[i++] = digit < 10 ? digit + '0' : digit + offset;
+hex_digit = (n % 16);
+if (hex_digit < 10)
+num_buffer[i++] = hex_digit + '0';
+else
+num_buffer[i++] = hex_digit - 10 + (uppercase ? 'A' : 'a');
 n /= 16;
 }
 }
@@ -323,24 +325,33 @@ return (count);
 */
 int handle_pointer(void *p, char *buffer, int *buff_ind)
 {
-unsigned long int addr = (unsigned long int)p;
+unsigned long addr = (unsigned long)p;
 char num_buffer[20];
 int count = 0, i = 0;
-
-if (!p)
-return (handle_string("(nil)", buffer, buff_ind));
+char hex_digit;
 
 buffer[*buff_ind] = '0';
 (*buff_ind)++;
+count++;
 buffer[*buff_ind] = 'x';
 (*buff_ind)++;
-count += 2;
+count++;
 
+if (addr == 0)
+{
+num_buffer[i++] = '0';
+}
+else
+{
 while (addr > 0)
 {
-int digit = addr % 16;
-num_buffer[i++] = digit < 10 ? digit + '0' : digit - 10 + 'a';
+hex_digit = (addr % 16);
+if (hex_digit < 10)
+num_buffer[i++] = hex_digit + '0';
+else
+num_buffer[i++] = hex_digit - 10 + 'a';
 addr /= 16;
+}
 }
 
 while (i--)
@@ -396,18 +407,7 @@ return (count);
 }
 
 /**
-* buffer_flush - Flushes the buffer to standard output
-* @buffer: The buffer to flush
-* @buff_ind: The current index in the buffer
-*/
-void buffer_flush(char *buffer, int *buff_ind)
-{
-write(1, buffer, *buff_ind);
-*buff_ind = 0;
-}
-
-/**
-* handle_custom_string - Writes a string with non-printable characters
+* handle_custom_string - Writes a custom string to buffer
 * @str: The string to write
 * @buffer: The buffer to store characters
 * @buff_ind: The current index in the buffer
@@ -417,10 +417,7 @@ write(1, buffer, *buff_ind);
 int handle_custom_string(char *str, char *buffer, int *buff_ind)
 {
 int count = 0;
-char hex_digits[] = "0123456789ABCDEF";
-
-if (str == NULL)
-str = "(null)";
+char non_printable[5];
 
 while (*str)
 {
@@ -429,37 +426,47 @@ if (*str < 32 || *str >= 127)
 buffer[*buff_ind] = '\\';
 (*buff_ind)++;
 count++;
-if (*buff_ind >= BUFFER_SIZE)
-buffer_flush(buffer, buff_ind);
 
 buffer[*buff_ind] = 'x';
 (*buff_ind)++;
 count++;
-if (*buff_ind >= BUFFER_SIZE)
-buffer_flush(buffer, buff_ind);
 
-buffer[*buff_ind] = hex_digits[(*str >> 4) & 0xF];
+non_printable[0] = ((*str >> 4) < 10) ? ((*str >> 4) + '0') : ((*str >> 4) - 10 + 'A');
+non_printable[1] = ((*str & 0x0F) < 10) ? ((*str & 0x0F) + '0') : ((*str & 0x0F) - 10 + 'A');
+non_printable[2] = '\0';
+
+buffer[*buff_ind] = non_printable[0];
 (*buff_ind)++;
 count++;
-if (*buff_ind >= BUFFER_SIZE)
-buffer_flush(buffer, buff_ind);
 
-buffer[*buff_ind] = hex_digits[*str & 0xF];
+buffer[*buff_ind] = non_printable[1];
 (*buff_ind)++;
 count++;
+
+if (*buff_ind >= BUFFER_SIZE)
+buffer_flush(buffer, buff_ind);
 }
 else
 {
 buffer[*buff_ind] = *str;
 (*buff_ind)++;
 count++;
-}
 if (*buff_ind >= BUFFER_SIZE)
 buffer_flush(buffer, buff_ind);
+}
 str++;
 }
 
 return (count);
 }
 
-
+/**
+* buffer_flush - Flushes the buffer to stdout
+* @buffer: The buffer to flush
+* @buff_ind: The current index in the buffer
+*/
+void buffer_flush(char *buffer, int *buff_ind)
+{
+write(1, buffer, *buff_ind);
+*buff_ind = 0;
+}

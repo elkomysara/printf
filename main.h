@@ -3,12 +3,8 @@
 
 #include <stdarg.h>
 #include <unistd.h>
-#include <stdlib.h>
-
-#define BUFFER_SIZE 1024
 
 int _printf(const char *format, ...);
-
 int handle_char(char c, char *buffer, int *buff_ind);
 int handle_string(char *str, char *buffer, int *buff_ind);
 int handle_format(const char *format, va_list args, char *buffer, int *buff_ind);
@@ -22,6 +18,8 @@ int handle_custom_string(char *str, char *buffer, int *buff_ind);
 void buffer_flush(char *buffer, int *buff_ind);
 
 #endif /* MAIN_H */
+
+
 
 
 
