@@ -11,6 +11,7 @@ int handle_octal(unsigned int n, char *buffer, int *buff_ind);
 int handle_hex(unsigned int n, int uppercase, char *buffer, int *buff_ind);
 int handle_pointer(void *p, char *buffer, int *buff_ind);
 int handle_binary(unsigned int n, char *buffer, int *buff_ind);
+int handle_custom_string(char *str, char *buffer, int *buff_ind);
 void buffer_flush(char *buffer, int *buff_ind);
 
 /**
@@ -49,71 +50,64 @@ return (count);
 */
 int handle_format(const char *format, va_list args, char *buffer, int *buff_ind)
 {
-int count = 0;
-const char *p;
+int i, count = 0;
 
-for (p = format; *p != '\0'; p++)
+for (i = 0; format && format[i]; i++)
 {
-if (*p == '%')
+if (format[i] == '%')
 {
-p++;
-switch (*p)
-{
-case 'c':
+i++;
+if (format[i] == '\0')
+break;
+if (format[i] == 'c')
 count += handle_char(va_arg(args, int), buffer, buff_ind);
-break;
-case 's':
+else if (format[i] == 's')
 count += handle_string(va_arg(args, char *), buffer, buff_ind);
-break;
-case '%':
+else if (format[i] == 'd' || format[i] == 'i')
+count += handle_int(va_arg(args, int), buffer, buff_ind);
+else if (format[i] == 'u')
+count += handle_unsigned(va_arg(args, unsigned int), buffer, buff_ind);
+else if (format[i] == 'o')
+count += handle_octal(va_arg(args, unsigned int), buffer, buff_ind);
+else if (format[i] == 'x')
+count += handle_hex(va_arg(args, unsigned int), 0, buffer, buff_ind);
+else if (format[i] == 'X')
+count += handle_hex(va_arg(args, unsigned int), 1, buffer, buff_ind);
+else if (format[i] == 'p')
+count += handle_pointer(va_arg(args, void *), buffer, buff_ind);
+else if (format[i] == 'b')
+count += handle_binary(va_arg(args, unsigned int), buffer, buff_ind);
+else if (format[i] == 'S')
+count += handle_custom_string(va_arg(args, char *), buffer, buff_ind);
+else if (format[i] == '%')
+{
 buffer[*buff_ind] = '%';
 (*buff_ind)++;
 count++;
-break;
-case 'd':
-case 'i':
-count += handle_int(va_arg(args, int), buffer, buff_ind);
-break;
-case 'u':
-count += handle_unsigned(va_arg(args, unsigned int), buffer, buff_ind);
-break;
-case 'o':
-count += handle_octal(va_arg(args, unsigned int), buffer, buff_ind);
-break;
-case 'x':
-count += handle_hex(va_arg(args, unsigned int), 0, buffer, buff_ind);
-break;
-case 'X':
-count += handle_hex(va_arg(args, unsigned int), 1, buffer, buff_ind);
-break;
-case 'p':
-count += handle_pointer(va_arg(args, void *), buffer, buff_ind);
-break;
-case 'b':
-count += handle_binary(va_arg(args, unsigned int), buffer, buff_ind);
-break;
-default:
+}
+else
+{
 buffer[*buff_ind] = '%';
 (*buff_ind)++;
-buffer[*buff_ind] = *p;
+count++;
+buffer[*buff_ind] = format[i];
 (*buff_ind)++;
-count += 2;
-break;
+count++;
 }
 }
 else
 {
-buffer[*buff_ind] = *p;
+buffer[*buff_ind] = format[i];
 (*buff_ind)++;
 count++;
 }
-
 if (*buff_ind >= BUFFER_SIZE)
 buffer_flush(buffer, buff_ind);
 }
 
 return (count);
 }
+
 
 /**
 * handle_char - Writes a character to buffer
@@ -411,4 +405,61 @@ void buffer_flush(char *buffer, int *buff_ind)
 write(1, buffer, *buff_ind);
 *buff_ind = 0;
 }
+
+/**
+* handle_custom_string - Writes a string with non-printable characters
+* @str: The string to write
+* @buffer: The buffer to store characters
+* @buff_ind: The current index in the buffer
+*
+* Return: The number of characters written
+*/
+int handle_custom_string(char *str, char *buffer, int *buff_ind)
+{
+int count = 0;
+char hex_digits[] = "0123456789ABCDEF";
+
+if (str == NULL)
+str = "(null)";
+
+while (*str)
+{
+if (*str < 32 || *str >= 127)
+{
+buffer[*buff_ind] = '\\';
+(*buff_ind)++;
+count++;
+if (*buff_ind >= BUFFER_SIZE)
+buffer_flush(buffer, buff_ind);
+
+buffer[*buff_ind] = 'x';
+(*buff_ind)++;
+count++;
+if (*buff_ind >= BUFFER_SIZE)
+buffer_flush(buffer, buff_ind);
+
+buffer[*buff_ind] = hex_digits[(*str >> 4) & 0xF];
+(*buff_ind)++;
+count++;
+if (*buff_ind >= BUFFER_SIZE)
+buffer_flush(buffer, buff_ind);
+
+buffer[*buff_ind] = hex_digits[*str & 0xF];
+(*buff_ind)++;
+count++;
+}
+else
+{
+buffer[*buff_ind] = *str;
+(*buff_ind)++;
+count++;
+}
+if (*buff_ind >= BUFFER_SIZE)
+buffer_flush(buffer, buff_ind);
+str++;
+}
+
+return (count);
+}
+
 
