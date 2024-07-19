@@ -3,6 +3,24 @@
 #include <unistd.h>
 #include <stddef.h>
 
+#define BUFFER_SIZE 1024
+
+#define FLAG_PLUS 1
+#define FLAG_SPACE 2
+#define FLAG_HASH 4
+
+int handle_char(char c, char *buffer, int *buff_ind);
+int handle_string(char *str, char *buffer, int *buff_ind);
+int handle_format(const char *format, int *i, va_list args, char *buffer, int *buff_ind);
+int handle_int(int n, char *buffer, int *buff_ind, int flags);
+int handle_unsigned(unsigned int n, char *buffer, int *buff_ind, int flags);
+int handle_octal(unsigned int n, char *buffer, int *buff_ind, int flags);
+int handle_hex(unsigned int n, int uppercase, char *buffer, int *buff_ind, int flags);
+int handle_pointer(void *p, char *buffer, int *buff_ind, int flags);
+int handle_binary(unsigned int n, char *buffer, int *buff_ind);
+int handle_custom_string(char *str, char *buffer, int *buff_ind);
+void buffer_flush(char *buffer, int *buff_ind);
+
 /**
 * _printf - Produces output according to a format
 * @format: A character string composed of zero or more directives
