@@ -3,24 +3,6 @@
 #include <unistd.h>
 #include <stddef.h>
 
-#define BUFFER_SIZE 1024
-
-#define FLAG_PLUS 1
-#define FLAG_SPACE 2
-#define FLAG_HASH 4
-
-int handle_char(char c, char *buffer, int *buff_ind);
-int handle_string(char *str, char *buffer, int *buff_ind);
-int handle_format(const char *format, int *i, va_list args, char *buffer, int *buff_ind);
-int handle_int(int n, char *buffer, int *buff_ind, int flags);
-int handle_unsigned(unsigned int n, char *buffer, int *buff_ind, int flags);
-int handle_octal(unsigned int n, char *buffer, int *buff_ind, int flags);
-int handle_hex(unsigned int n, int uppercase, char *buffer, int *buff_ind, int flags);
-int handle_pointer(void *p, char *buffer, int *buff_ind, int flags);
-int handle_binary(unsigned int n, char *buffer, int *buff_ind);
-int handle_custom_string(char *str, char *buffer, int *buff_ind);
-void buffer_flush(char *buffer, int *buff_ind);
-
 /**
 * _printf - Produces output according to a format
 * @format: A character string composed of zero or more directives
@@ -114,20 +96,20 @@ return (0); /* if no match, just return 0 */
 */
 int handle_string(char *str, char *buffer, int *buff_ind)
 {
-int count = 0;
+int len = 0;
+
+if (str == NULL)
+str = "(null)";
 
 while (*str)
 {
 buffer[*buff_ind] = *str;
 (*buff_ind)++;
-count++;
 str++;
-
-if (*buff_ind >= BUFFER_SIZE)
-buffer_flush(buffer, buff_ind);
+len++;
 }
 
-return (count);
+return (len);
 }
 
 /**
@@ -141,13 +123,26 @@ return (count);
 */
 int handle_int(int n, char *buffer, int *buff_ind, int flags)
 {
-int len = 0;
-int is_negative = n < 0;
-unsigned int num = is_negative ? -n : n;
-char num_buffer[20];  /* Temporary buffer for number conversion */
+int len = 0, is_negative = 0;
+unsigned int num;
+char num_buffer[20];
 int num_index = 0;
 
-/* Handle sign */
+if (n < 0)
+{
+is_negative = 1;
+num = -n;
+}
+else
+{
+num = n;
+}
+
+do {
+num_buffer[num_index++] = num % 10 + '0';
+num /= 10;
+} while (num > 0);
+
 if (is_negative)
 {
 buffer[*buff_ind] = '-';
@@ -167,13 +162,6 @@ buffer[*buff_ind] = ' ';
 len++;
 }
 
-/* Convert number to string in reverse */
-do {
-num_buffer[num_index++] = num % 10 + '0';
-num /= 10;
-} while (num > 0);
-
-/* Copy number to buffer in correct order */
 while (num_index--)
 {
 buffer[*buff_ind] = num_buffer[num_index];
@@ -193,11 +181,13 @@ return (len);
 *
 * Return: The number of characters written
 */
-int handle_unsigned(unsigned int n, char *buffer, int *buff_ind)
+int handle_unsigned(unsigned int n, char *buffer, int *buff_ind, int flags)
 {
 int len = 0;
 char num_buffer[20];
 int num_index = 0;
+
+(void)flags; /* `flags` not used in this function, avoiding unused parameter warning */
 
 do {
 num_buffer[num_index++] = n % 10 + '0';
@@ -213,6 +203,7 @@ len++;
 
 return (len);
 }
+
 
 /**
 * handle_octal - Writes an unsigned integer in octal to buffer with flags
@@ -273,43 +264,33 @@ return (count);
 */
 int handle_hex(unsigned int n, int uppercase, char *buffer, int *buff_ind, int flags)
 {
-char num_buffer[20];
-int count = 0, i = 0;
-char *hex_digits = uppercase ? "0123456789ABCDEF" : "0123456789abcdef";
+int len = 0;
+char hex_buffer[20];
+int hex_index = 0;
+const char *digits = uppercase ? "0123456789ABCDEF" : "0123456789abcdef";
 
-if (flags & 4 && n != 0)
+if (flags & FLAG_HASH)
 {
 buffer[*buff_ind] = '0';
 (*buff_ind)++;
 buffer[*buff_ind] = uppercase ? 'X' : 'x';
 (*buff_ind)++;
-count += 2;
+len += 2;
 }
 
-if (n == 0)
-{
-num_buffer[i++] = '0';
-}
-else
-{
-while (n > 0)
-{
-num_buffer[i++] = hex_digits[n % 16];
+do {
+hex_buffer[hex_index++] = digits[n % 16];
 n /= 16;
-}
-}
+} while (n > 0);
 
-while (i--)
+while (hex_index--)
 {
-buffer[*buff_ind] = num_buffer[i];
+buffer[*buff_ind] = hex_buffer[hex_index];
 (*buff_ind)++;
-count++;
-
-if (*buff_ind >= BUFFER_SIZE)
-buffer_flush(buffer, buff_ind);
+len++;
 }
 
-return (count);
+return (len);
 }
 
 /**
@@ -349,6 +330,22 @@ len++;
 
 return (len);
 }
+
+/**
+* handle_char - Writes a character to buffer
+* @c: The character to write
+* @buffer: The buffer to store characters
+* @buff_ind: The current index in the buffer
+*
+* Return: The number of characters written (always 1)
+*/
+int handle_char(char c, char *buffer, int *buff_ind)
+{
+buffer[*buff_ind] = c;
+(*buff_ind)++;
+return (1);
+}
+
 
 /**
 * handle_binary - Writes an unsigned integer in binary to buffer
@@ -443,12 +440,10 @@ return (count);
 * @buffer: The buffer to flush
 * @buff_ind: The current index in the buffer
 */
+
 void buffer_flush(char *buffer, int *buff_ind)
-{
-if (*buff_ind > 0)
 {
 write(1, buffer, *buff_ind);
 *buff_ind = 0;
-}
 }
 
