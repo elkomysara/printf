@@ -1,6 +1,58 @@
 #include "main.h"
 
 /**
+* _printf - produces output according to a format
+* @format: format string containing the characters and the specifiers
+*
+* Return: the number of characters printed (excluding the null byte)
+*/
+int _printf(const char *format, ...)
+{
+va_list arguments;
+const char *p;
+int count = 0;
+
+if (!format)
+return (-1);
+
+va_start(arguments, format);
+
+for (p = format; *p; p++)
+{
+if (*p == '%')
+{
+p++;
+if (*p == '%')
+{
+count += _putchar('%');
+continue;
+}
+else if (*p == 'c')
+{
+count += handle_char(arguments);
+}
+else if (*p == 's')
+{
+count += handle_string(arguments);
+}
+else
+{
+/* Handle unknown specifier */
+count += _putchar('%');
+count += _putchar(*p);
+}
+}
+else
+{
+count += _putchar(*p);
+}
+}
+
+va_end(arguments);
+return (count);
+}
+
+/**
 * handle_char - handles the %c format specifier
 * @args: argument list
 *
@@ -30,69 +82,5 @@ while (*str)
 _putchar(*str++);
 count++;
 }
-return (count);
-}
-
-/**
-* handle_format - handles the format string
-* @format: format string containing the characters and specifiers
-* @args: argument list
-*
-* Return: number of characters printed
-*/
-int handle_format(const char *format, va_list args)
-{
-int i = 0, count = 0;
-
-while (format && format[i])
-{
-if (format[i] == '%')
-{
-i++;
-if (format[i] == 'c')
-count += handle_char(args);
-else if (format[i] == 's')
-count += handle_string(args);
-else if (format[i] == '%')
-{
-_putchar('%');
-count++;
-}
-else
-{
-/* Print '%' and the unknown specifier */
-_putchar('%');
-_putchar(format[i]);
-count += 2;
-}
-}
-else
-{
-_putchar(format[i]);
-count++;
-}
-i++;
-}
-return (count);
-}
-
-/**
-* _printf - produces output according to a format
-* @format: format string containing the characters and the specifiers
-*
-* Return: the number of characters printed
-*         (excluding the null byte used to end output to strings)
-*/
-int _printf(const char *format, ...)
-{
-va_list args;
-int count;
-
-if (!format)
-return (-1);
-
-va_start(args, format);
-count = handle_format(format, args);
-va_end(args);
 return (count);
 }
