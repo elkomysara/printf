@@ -49,23 +49,21 @@ while (format && format[i])
 if (format[i] == '%')
 {
 i++;
-switch (format[i])
-{
-case 'c':
+if (format[i] == 'c')
 count += handle_char(args);
-break;
-case 's':
+else if (format[i] == 's')
 count += handle_string(args);
-break;
-case '%':
+else if (format[i] == '%')
+{
 _putchar('%');
 count++;
-break;
-default:
+}
+else
+{
+/* Print '%' and the unknown specifier */
 _putchar('%');
 _putchar(format[i]);
 count += 2;
-break;
 }
 }
 else
