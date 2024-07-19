@@ -1,33 +1,48 @@
 #include "main.h"
 
 /**
-* _putchar - writes a character to stdout
-* @c: character to write
+* handle_char - handles the %c format specifier
+* @args: argument list
 *
-* Return: On success 1.
-* On error, -1 is returned, and errno is set appropriately.
+* Return: number of characters printed
 */
-int _putchar(char c)
+int handle_char(va_list args)
 {
-return (write(1, &c, 1));
+_putchar(va_arg(args, int));
+return (1);
 }
 
 /**
-* _printf - produces output according to a format
-* @format: format string containing the characters and the specifiers
+* handle_string - handles the %s format specifier
+* @args: argument list
 *
-* Return: the number of characters printed (excluding the null byte used to end output to strings)
+* Return: number of characters printed
 */
-int _printf(const char *format, ...)
+int handle_string(va_list args)
 {
-va_list args;
+int count = 0;
+char *str = va_arg(args, char *);
+
+if (!str)
+str = "(null)";
+while (*str)
+{
+_putchar(*str++);
+count++;
+}
+return (count);
+}
+
+/**
+* handle_format - handles the format string
+* @format: format string containing the characters and specifiers
+* @args: argument list
+*
+* Return: number of characters printed
+*/
+int handle_format(const char *format, va_list args)
+{
 int i = 0, count = 0;
-char *str;
-
-if (!format)
-return (-1);
-
-va_start(args, format);
 
 while (format && format[i])
 {
@@ -37,18 +52,10 @@ i++;
 switch (format[i])
 {
 case 'c':
-_putchar(va_arg(args, int));
-count++;
+count += handle_char(args);
 break;
 case 's':
-str = va_arg(args, char *);
-if (!str)
-str = "(null)";
-while (*str)
-{
-_putchar(*str++);
-count++;
-}
+count += handle_string(args);
 break;
 case '%':
 _putchar('%');
@@ -68,8 +75,26 @@ count++;
 }
 i++;
 }
-
-va_end(args);
 return (count);
 }
 
+/**
+* _printf - produces output according to a format
+* @format: format string containing the characters and the specifiers
+*
+* Return: the number of characters printed
+*         (excluding the null byte used to end output to strings)
+*/
+int _printf(const char *format, ...)
+{
+va_list args;
+int count;
+
+if (!format)
+return (-1);
+
+va_start(args, format);
+count = handle_format(format, args);
+va_end(args);
+return (count);
+}
