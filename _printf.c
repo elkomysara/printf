@@ -1,86 +1,29 @@
 #include "main.h"
 
 /**
-* _printf - produces output according to a format
-* @format: format string containing the characters and the specifiers
+* _printf - Receives the main string and all the necessary parameters to
+* print a formatted string.
+* @format: A string containing all the desired characters.
 *
-* Return: the number of characters printed (excluding the null byte)
+* Return: A total count of the characters printed.
 */
 int _printf(const char *format, ...)
 {
-va_list arguments;
-const char *p;
-int count = 0;
+int printed_chars;
+conver_t f_list[] = {
+{"%", print_percent},
+{"c", print_char},
+{"s", print_string},
+{NULL, NULL},
+};
+va_list arg_list;
 
-if (!format)
+if (format == NULL)
 return (-1);
 
-va_start(arguments, format);
-
-for (p = format; *p; p++)
-{
-if (*p == '%')
-{
-p++;
-if (*p == '%')
-{
-count += _putchar('%');
-continue;
-}
-else if (*p == 'c')
-{
-count += handle_char(arguments);
-}
-else if (*p == 's')
-{
-count += handle_string(arguments);
-}
-else
-{
-/* Handle unknown specifier */
-count += _putchar('%');
-count += _putchar(*p);
-}
-}
-else
-{
-count += _putchar(*p);
-}
+va_start(arg_list, format);
+printed_chars = format_reciever(format, f_list, arg_list);
+va_end(arg_list);
+return (printed_chars);
 }
 
-va_end(arguments);
-return (count);
-}
-
-/**
-* handle_char - handles the %c format specifier
-* @args: argument list
-*
-* Return: number of characters printed
-*/
-int handle_char(va_list args)
-{
-_putchar(va_arg(args, int));
-return (1);
-}
-
-/**
-* handle_string - handles the %s format specifier
-* @args: argument list
-*
-* Return: number of characters printed
-*/
-int handle_string(va_list args)
-{
-int count = 0;
-char *str = va_arg(args, char *);
-
-if (!str)
-str = "(null)";
-while (*str)
-{
-_putchar(*str++);
-count++;
-}
-return (count);
-}
