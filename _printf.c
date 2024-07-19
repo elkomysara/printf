@@ -4,6 +4,7 @@
 #include <stddef.h>
 
 #define BUFFER_SIZE 1024
+
 #define FLAG_PLUS 1
 #define FLAG_SPACE 2
 #define FLAG_HASH 4

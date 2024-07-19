@@ -5,6 +5,10 @@
 
 #define BUFFER_SIZE 1024
 
+#define FLAG_PLUS 1
+#define FLAG_SPACE 2
+#define FLAG_HASH 4
+
 int _printf(const char *format, ...);
 int handle_format(const char *format, int *i, va_list args, char *buffer, int *buff_ind);
 int handle_char(char c, char *buffer, int *buff_ind);
@@ -17,9 +21,7 @@ int handle_pointer(void *p, char *buffer, int *buff_ind, int flags);
 void buffer_flush(char *buffer, int *buff_ind);
 
 /* Define flag constants */
-#define FLAG_PLUS 1
-#define FLAG_SPACE 2
-#define FLAG_HASH 4
+
 
 #endif /* MAIN_H */
 
