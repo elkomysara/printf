@@ -1,14 +1,19 @@
 #ifndef MAIN_H
 #define MAIN_H
 
-#include <stdarg.h>
+#include <stdio.h>
 #include <unistd.h>
+#include <stdlib.h>
+#include <stdarg.h>
+#include <limits.h>
+
+#define NULL_STRING "(null)"
+#define NUL '\0'
 
 /**
  * struct convert - defines a structure for symbols and functions
- *
- * @sym: The symbol (format specifier)
- * @f: The function associated with the symbol
+ * @sym: The operator
+ * @f: The function associated
  */
 struct convert
 {
@@ -17,12 +22,12 @@ struct convert
 };
 typedef struct convert conver_t;
 
-/* Function prototypes */
 int _printf(const char *format, ...);
 int _putchar(char c);
 int format_reciever(const char *format, conver_t f_list[], va_list arg_list);
-int print_percent(va_list args);
-int print_char(va_list args);
-int print_string(va_list args);
+int print_percent(va_list);
+int print_char(va_list);
+int print_string(va_list);
 
 #endif /* MAIN_H */
+

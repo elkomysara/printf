@@ -1,13 +1,13 @@
 #include "main.h"
 
 /**
- * print_percent - Prints a percent sign.
- * @args: Argument list (not used).
- * 
- * Return: The number of characters printed.
- */
-int print_percent(va_list args)
+* print_percent - Prints a percent symbol
+* @list: list of arguments
+* Return: Will return the amount of characters printed.
+*/
+int print_percent(__attribute__((unused))va_list list)
 {
-    (void)args; /* Unused parameter */
-    return (_putchar('%'));
+_putchar('%');
+return (1);
 }
+
