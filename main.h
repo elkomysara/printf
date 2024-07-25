@@ -12,6 +12,7 @@
 
 /**
  * struct convert - defines a structure for symbols and functions
+ *
  * @sym: The operator
  * @f: The function associated
  */
@@ -25,9 +26,15 @@ typedef struct convert conver_t;
 int _printf(const char *format, ...);
 int _putchar(char c);
 int format_reciever(const char *format, conver_t f_list[], va_list arg_list);
-int print_percent(va_list);
-int print_char(va_list);
-int print_string(va_list);
+int print_percent(va_list list);
+int print_integer(va_list list);
+int print_char(va_list list);
+int print_string(va_list list);
+int print_String(va_list list);
+int print_number(int n);
+int _puts(char *str);
+int isNonAlphaNumeric(char c);
+char *convert(unsigned long int num, int base, int lowercase);
 
-#endif /* MAIN_H */
+#endif
 
