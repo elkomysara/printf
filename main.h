@@ -2,12 +2,13 @@
 #define MAIN_H
 
 #include <stdarg.h>
-#include <unistd.h>
+#include <stdlib.h>
 
 typedef struct converter {
     char *specifier;
     int (*f)(va_list, char *, int *);
 } conver_t;
+
 int _printf(const char *format, ...);
 int _putchar(char c, char *buffer, int *index);
 int _puts(char *str, char *buffer, int *index);
@@ -22,10 +23,7 @@ int print_unsigned(va_list list, char *buffer, int *index);
 int print_octal(va_list list, char *buffer, int *index);
 int print_hex(va_list list, char *buffer, int *index);
 int print_HEX(va_list list, char *buffer, int *index);
+int print_special_string(va_list list, char *buffer, int *index); 
 char *convert(unsigned long int num, int base, int lowercase);
 
-
-#endif
-
-
-
+#endif /* MAIN_H */

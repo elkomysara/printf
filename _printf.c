@@ -1,4 +1,5 @@
 #include "main.h"
+#include <unistd.h>
 
 /**
 * _printf - Receives the main string and all the necessary parameters to

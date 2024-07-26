@@ -1,9 +1,11 @@
 #include "main.h"
+#include <unistd.h> 
 
 /**
- * flush_buffer - Writes the buffer to stdout and resets the buffer index
- * @buffer: The buffer containing the characters to be written
- * @index: The current index in the buffer
+ * flush_buffer - Writes the content of the buffer to stdout
+ * @buffer: Buffer to store characters
+ * @index: Current index in the buffer
+ * Return: void
  */
 void flush_buffer(char *buffer, int *index)
 {
