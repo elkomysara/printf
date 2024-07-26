@@ -1,0 +1,45 @@
+#include "main.h"
+
+/**
+* print_binary - Converts an unsigned int argument to binary
+* @list: list of arguments
+* Return: The number of characters printed
+*/
+int print_binary(va_list list)
+{
+unsigned int n = va_arg(list, unsigned int);
+int num_chars = 0;
+char *binary_str;
+
+binary_str = convert(n, 2, 0);
+if (binary_str == NULL)
+return (-1);
+num_chars = _puts(binary_str);
+free(binary_str);
+return (num_chars);
+}
+
+/**
+* convert - Converts a number to a string in the given base
+* @num: The number to be converted
+* @base: The base to convert to
+* @lowercase: Flag to determine if hex letters should be lowercase
+* Return: A pointer to the converted string
+*/
+char *convert(unsigned long int num, int base, int lowercase)
+{
+static char *rep;
+static char buffer[50];
+char *ptr;
+
+rep = (lowercase) ? "0123456789abcdef" : "0123456789ABCDEF";
+ptr = &buffer[49];
+*ptr = '\0';
+
+do {
+*--ptr = rep[num % base];
+num /= base;
+} while (num != 0);
+
+return (ptr);
+}

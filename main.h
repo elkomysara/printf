@@ -30,6 +30,9 @@ int print_char(va_list);
 int print_string(va_list);
 int print_integer(va_list);
 int print_number(int n);
+int print_binary(va_list list);
+char *convert(unsigned long int num, int base, int lowercase);
+int _puts(char *str);
 #endif /* MAIN_H */
 
 
