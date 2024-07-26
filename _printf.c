@@ -26,6 +26,7 @@ conver_t f_list[] = {
 {"x", print_hex},
 {"X", print_HEX},
 {"S", print_special_string},
+{"p", print_pointer},
 {NULL, NULL}
 };
 
