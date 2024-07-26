@@ -1,12 +1,8 @@
 #include "main.h"
 
-/**
-* print_char - Prints character
-* @list: list of arguments
-* Return: Will return the amount of characters printed.
-*/
-int print_char(va_list list)
+int print_char(va_list list, char *buffer, int *index)
 {
-_putchar(va_arg(list, int));
-return (1);
+    _putchar(va_arg(list, int), buffer, index);
+    return (1);
 }
+
