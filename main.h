@@ -32,6 +32,10 @@ int print_integer(va_list);
 int print_number(int n);
 int print_binary(va_list list);
 char *convert(unsigned long int num, int base, int lowercase);
+int print_unsigned(va_list list);
+int print_octal(va_list list);
+int print_hex(va_list list);
+int print_HEX(va_list list);
 int _puts(char *str);
 #endif /* MAIN_H */
 

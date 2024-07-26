@@ -7,8 +7,9 @@
  */
 int main(void)
 {
-    _printf("%b\n", 98);
+    _printf("Unsigned:[%u]\n", 12345);
+    _printf("Octal:[%o]\n", 12345);
+    _printf("Hexadecimal:[%x]\n", 12345);
+    _printf("HEX:[%X]\n", 12345);
     return (0);
 }
-
-
