@@ -23,6 +23,8 @@ int print_octal(va_list list, char *buffer, int *index);
 int print_hex(va_list list, char *buffer, int *index);
 int print_HEX(va_list list, char *buffer, int *index);
 char *convert(unsigned long int num, int base, int lowercase);
+int print_special_string(va_list list, char *buffer, int *index);
+
 
 
 #endif
