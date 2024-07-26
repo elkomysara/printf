@@ -19,7 +19,6 @@ int print_octal(va_list list, char *buffer, int *index)
         return (-1);
 
     num_chars = _puts(str, buffer, index);
-    free(str); /* Free the dynamically allocated string */
     return (num_chars);
 }
 
