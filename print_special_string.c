@@ -1,8 +1,9 @@
 #include "main.h"
-#include <stdio.h>  
+#include <stdio.h>
 
 /**
- * print_special_string - Prints a string, replacing non-printable characters
+ * print_special_string - Prints a string and converts non-printable
+ * characters to their hexadecimal representation.
  * @list: list of arguments
  * @buffer: buffer to store the result
  * @index: current index in the buffer
@@ -11,8 +12,8 @@
 int print_special_string(va_list list, char *buffer, int *index)
 {
     char *str = va_arg(list, char *);
-    int i, count = 0;
-    char hex[3];
+    char hex[5];
+    int i, j, num_chars = 0;
 
     if (str == NULL)
         str = "(null)";
@@ -21,21 +22,18 @@ int print_special_string(va_list list, char *buffer, int *index)
     {
         if ((str[i] > 0 && str[i] < 32) || str[i] >= 127)
         {
-            _putchar('\\', buffer, index);
-            _putchar('x', buffer, index);
-            count += 2;
-
-            sprintf(hex, "%02X", (unsigned char)str[i]);
-            _putchar(hex[0], buffer, index);
-            _putchar(hex[1], buffer, index);
-            count += 2;
+            sprintf(hex, "\\x%02X", (unsigned char)str[i]);
+            for (j = 0; hex[j] != '\0'; j++)
+            {
+                _putchar(hex[j], buffer, index);
+                num_chars++;
+            }
         }
         else
         {
             _putchar(str[i], buffer, index);
-            count++;
+            num_chars++;
         }
     }
-
-    return (count);
+    return (num_chars);
 }

@@ -6,7 +6,6 @@
 * @format: A string containing all the desired characters
 * Return: A total count of the characters printed
 */
-
 int _printf(const char *format, ...)
 {
 va_list arg_list;
@@ -25,6 +24,7 @@ conver_t f_list[] = {
 {"o", print_octal},
 {"x", print_hex},
 {"X", print_HEX},
+{"S", print_special_string},
 {NULL, NULL}
 };
 
@@ -37,4 +37,3 @@ write(1, buffer, index);
 
 return (printed_chars);
 }
-
