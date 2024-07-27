@@ -1,22 +1,34 @@
 #include "main.h"
+#include <stdio.h>
 
 /**
  * print_unsigned - Prints an unsigned integer
- * @list: list of arguments
- * @buffer: buffer to store the result
- * @index: current index in the buffer
- * Return: The number of characters printed
+ * @list: List of arguments
+ * @buffer: Buffer to store characters
+ * @index: Current index in the buffer
+ * @flags: Flags for formatting
+ * Return: Number of characters printed
  */
-int print_unsigned(va_list list, char *buffer, int *index)
+int print_unsigned(va_list list, char *buffer, int *index, flags_t flags)
 {
     unsigned int n = va_arg(list, unsigned int);
-    char *str;
-    int num_chars;
+    int num_chars = 0;
+    char temp[50];
+    int temp_index = 0;
 
-    str = convert(n, 10, 0);
-    if (str == NULL)
-        return (-1);
+    (void)flags; /* Flags are not used for unsigned integers */
 
-    num_chars = _puts(str, buffer, index);
+    do {
+        temp[temp_index++] = (n % 10) + '0';
+        n /= 10;
+    } while (n > 0);
+
+    for (temp_index--; temp_index >= 0; temp_index--)
+    {
+        buffer[*index] = temp[temp_index];
+        (*index)++;
+        num_chars++;
+    }
+
     return (num_chars);
 }

@@ -1,30 +1,41 @@
 #include "main.h"
 #include <stdio.h>
 
+
+
+
 /**
  * print_pointer - Prints a pointer address
- * @list: list of arguments
- * @buffer: buffer to store characters
- * @index: current index in the buffer
- * Return: The number of characters printed
+ * @list: List of arguments
+ * @buffer: Buffer to store characters
+ * @index: Current index in the buffer
+ * @flags: Flags for formatting
+ * Return: Number of characters printed
  */
-int print_pointer(va_list list, char *buffer, int *index)
+int print_pointer(va_list list, char *buffer, int *index, flags_t flags)
 {
     void *ptr = va_arg(list, void *);
     unsigned long int addr = (unsigned long int)ptr;
-    char *hex_str;
-    int num_chars = 0;
+    char hex[17];
+    int i, digit;
 
-    if (ptr == NULL)
+    (void)flags; /* Suppress unused parameter warning */
+
+    _putchar('0', buffer, index);
+    _putchar('x', buffer, index);
+
+    i = 15;
+    while (addr)
     {
-        return (_puts("(nil)", buffer, index));
+        digit = addr % 16;
+        hex[i--] = (digit < 10) ? digit + '0' : digit - 10 + 'a';
+        addr /= 16;
+    }
+    i++;
+    while (i < 16)
+    {
+        _putchar(hex[i++], buffer, index);
     }
 
-    _puts("0x", buffer, index);
-    num_chars += 2;
-
-    hex_str = convert(addr, 16, 1);
-    num_chars += _puts(hex_str, buffer, index);
-
-    return (num_chars);
+    return (2 + 15 - i);
 }

@@ -1,55 +1,73 @@
+
 #include "main.h"
-#include <stdio.h>
+#include <stdlib.h>  /* Include stdlib.h for malloc */
+
+/* Helper function to implement itoa since it's not standard in C */
+void itoa(int num, char *str, int base) {
+    int i = 0;
+    int is_negative = 0;
+    int start, end;
+
+    /* Handle 0 explicitly, otherwise empty string is printed for 0 */
+    if (num == 0) {
+        str[i++] = '0';
+        str[i] = '\0';
+        return;
+    }
+
+    /* Handle negative numbers for base 10 */
+    if (num < 0 && base == 10) {
+        is_negative = 1;
+        num = -num;
+    }
+
+    /* Process individual digits */
+    while (num != 0) {
+        int rem = num % base;
+        str[i++] = (rem > 9) ? (rem - 10) + 'a' : rem + '0';
+        num = num / base;
+    }
+
+    /* Append '-' for negative numbers */
+    if (is_negative) {
+        str[i++] = '-';
+    }
+
+    str[i] = '\0';
+
+    /* Reverse the string */
+    start = 0;
+    end = i - 1;
+    while (start < end) {
+        char temp = str[start];
+        str[start] = str[end];
+        str[end] = temp;
+        start++;
+        end--;
+    }
+}
 
 /**
  * print_integer - Prints an integer
- * @list: list of arguments
- * @buffer: buffer to store characters
- * @index: current index in the buffer
- * @plus_flag: flag for '+' character
- * @space_flag: flag for ' ' character
- * @hash_flag: flag for '#' character
- * Return: The number of characters printed
+ * @list: List of arguments
+ * @buffer: Buffer to store characters
+ * @index: Current index in the buffer
+ * @flags: Flags for formatting
+ * Return: Number of characters printed
  */
-int print_integer(va_list list, char *buffer, int *index, int plus_flag, int space_flag, int hash_flag)
+int print_integer(va_list list, char *buffer, int *index, flags_t flags)
 {
-    int n = va_arg(list, int);
-    int num_chars = 0;
-    char temp[50];
-    int temp_index = 0;
+    int num = va_arg(list, int);
+    char str[12];
+    int i = 0;
 
-    if (plus_flag && n >= 0)
+    itoa(num, str, 10);
+    (void)flags; /* Suppress unused parameter warning */
+
+    while (str[i])
     {
-        buffer[*index] = '+';
-        (*index)++;
-        num_chars++;
+        _putchar(str[i], buffer, index);
+        i++;
     }
-    else if (space_flag && n >= 0)
-    {
-        buffer[*index] = ' ';
-        (*index)++;
-        num_chars++;
-    }
-
-    if (n < 0)
-    {
-        buffer[*index] = '-';
-        (*index)++;
-        num_chars++;
-        n = -n;
-    }
-
-    do {
-        temp[temp_index++] = (n % 10) + '0';
-        n /= 10;
-    } while (n > 0);
-
-    for (temp_index--; temp_index >= 0; temp_index--)
-    {
-        buffer[*index] = temp[temp_index];
-        (*index)++;
-        num_chars++;
-    }
-
-    return (num_chars);
+    return (i);
 }

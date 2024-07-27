@@ -1,3 +1,4 @@
+
 #include "main.h"
 #include <stdio.h>
 
@@ -6,18 +7,16 @@
  * @list: List of arguments
  * @buffer: Buffer to store characters
  * @index: Current index in the buffer
- * @plus_flag: Flag for '+' character
- * @space_flag: Flag for ' ' character
- * @hash_flag: Flag for '#' character
+ * @flags: Flags for formatting
  * Return: Number of characters printed
  */
-int print_HEX(va_list list, char *buffer, int *index)
+int print_HEX(va_list list, char *buffer, int *index, flags_t flags)
 {
     unsigned int num = va_arg(list, unsigned int);
     int num_chars = 0;
     char *str;
 
-    if (hash_flag && num != 0)
+    if (flags.hash && num != 0)
     {
         buffer[*index] = '0';
         buffer[*index + 1] = 'X';

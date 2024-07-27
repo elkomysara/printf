@@ -1,16 +1,21 @@
-
 #include "main.h"
+#include <stdio.h>
 
 /**
  * print_percent - Prints a percent symbol
- * @list: list of arguments (unused)
- * @buffer: The buffer to write to
- * @index: The current index in the buffer
- * Return: Always 1
+ * @list: List of arguments
+ * @buffer: Buffer to store characters
+ * @index: Current index in the buffer
+ * @flags: Flags for formatting
+ * Return: Number of characters printed
  */
-int print_percent(va_list list __attribute__((unused)), char *buffer, int *index)
+int print_percent(va_list list, char *buffer, int *index, flags_t flags)
 {
-    return _putchar('%', buffer, index);
+    (void)list;
+    (void)flags; /* Flags are not used for percent */
+
+    buffer[*index] = '%';
+    (*index)++;
+
+    return (1);
 }
-
-

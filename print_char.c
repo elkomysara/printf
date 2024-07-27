@@ -6,15 +6,15 @@
  * @list: List of arguments
  * @buffer: Buffer to store characters
  * @index: Current index in the buffer
- * @plus_flag: Flag for '+' character
- * @space_flag: Flag for ' ' character
- * @hash_flag: Flag for '#' character
+ * @flags: Flags for formatting
  * Return: Number of characters printed
  */
-int print_char(va_list list, char *buffer, int *index, int plus_flag, int space_flag, int hash_flag)
+int print_char(va_list list, char *buffer, int *index, flags_t flags)
 {
     char c = va_arg(list, int);
 
+    (void)flags; /* Flags are not used for characters */
+    
     buffer[*index] = c;
     (*index)++;
 

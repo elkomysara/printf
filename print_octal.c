@@ -1,25 +1,35 @@
 #include "main.h"
-#include <stdlib.h>
+#include <stdio.h>
 
 /**
- * print_octal - Prints a number in octal base
- * @list: list of arguments
- * @buffer: buffer to store the result
- * @index: current index in the buffer
- * Return: The number of characters printed
+ * print_octal - Prints a number in octal
+ * @list: List of arguments
+ * @buffer: Buffer to store characters
+ * @index: Current index in the buffer
+ * @flags: Flags for formatting
+ * Return: Number of characters printed
  */
-int print_octal(va_list list, char *buffer, int *index)
+int print_octal(va_list list, char *buffer, int *index, flags_t flags)
 {
-    unsigned int n = va_arg(list, unsigned int);
+    unsigned int num = va_arg(list, unsigned int);
+    int num_chars = 0;
     char *str;
-    int num_chars;
 
-    str = convert(n, 8, 0);
-    if (str == NULL)
-        return (-1);
+    if (flags.hash && num != 0)
+    {
+        buffer[*index] = '0';
+        (*index)++;
+        num_chars++;
+    }
 
-    num_chars = _puts(str, buffer, index);
+    str = convert(num, 8, 0);
+    while (*str)
+    {
+        buffer[*index] = *str;
+        (*index)++;
+        str++;
+        num_chars++;
+    }
+
     return (num_chars);
 }
-
-
