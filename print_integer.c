@@ -59,15 +59,28 @@ int print_integer(va_list list, char *buffer, int *index, flags_t flags)
 {
     int num = va_arg(list, int);
     char str[12];
-    int i = 0;
+    int i = 0, num_chars = 0;
 
     itoa(num, str, 10);
-    (void)flags; /* Suppress unused parameter warning */
+
+    /* Handle the space and plus flags */
+    if (flags.plus && num >= 0)
+    {
+        _putchar('+', buffer, index);
+        num_chars++;
+    }
+    else if (flags.space && num >= 0)
+    {
+        _putchar(' ', buffer, index);
+        num_chars++;
+    }
 
     while (str[i])
     {
         _putchar(str[i], buffer, index);
         i++;
+        num_chars++;
     }
-    return (i);
+
+    return (num_chars);
 }

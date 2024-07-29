@@ -1,9 +1,6 @@
 #include "main.h"
 #include <stdio.h>
 
-
-
-
 /**
  * print_pointer - Prints a pointer address
  * @list: List of arguments

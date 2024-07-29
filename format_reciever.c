@@ -2,47 +2,49 @@
 #include <stdio.h>
 
 /**
- * format_reciever - Receives the main string and all the necessary parameters to
+ * format_reciever - Receives the main string and necessary parameters to
  * print a formatted string
  * @format: A string containing all the desired characters
- * @f_list: A list of format specifiers and their corresponding functions
- * @arg_list: A list of arguments to be printed
- * @buffer: Buffer to store the formatted string
+ * @f_list: List of format specifiers and their corresponding functions
+ * @arg_list: List of arguments
+ * @buffer: Buffer to store characters
  * @index: Current index in the buffer
- * Return: A total count of the characters printed
+ * Return: Number of characters printed
  */
 int format_reciever(const char *format, conver_t f_list[], va_list arg_list, char *buffer, int *index)
 {
-    int i = 0, j, count = 0;
+    int i = 0, j, printed_chars = 0;
+    flags_t flags;
 
-    while (format && format[i])
+    while (format[i])
     {
         if (format[i] == '%')
         {
             i++;
-            for (j = 0; f_list[j].specifier != NULL; j++)
+            flags = parse_flags(format, &i);
+
+            for (j = 0; f_list[j].sym != NULL; j++)
             {
-                if (format[i] == f_list[j].specifier[0])
+                if (format[i] == f_list[j].sym[0])
                 {
-                    count += f_list[j].f(arg_list, buffer, index);
+                    printed_chars += f_list[j].f(arg_list, buffer, index, flags);
                     break;
                 }
             }
-            if (f_list[j].specifier == NULL)
+            if (f_list[j].sym == NULL)
             {
-                buffer[*index] = '%';
-                buffer[*index + 1] = format[i];
-                *index += 2;
-                count += 2;
+                _putchar('%', buffer, index);
+                _putchar(format[i], buffer, index);
+                printed_chars += 2;
             }
+            i++;
         }
         else
         {
-            buffer[*index] = format[i];
-            (*index)++;
-            count++;
+            _putchar(format[i], buffer, index);
+            printed_chars++;
+            i++;
         }
-        i++;
     }
-    return (count);
+    return (printed_chars);
 }

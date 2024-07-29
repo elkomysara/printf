@@ -1,9 +1,8 @@
 #include "main.h"
 #include <stdio.h>
 
-
 /**
- * print_special_string - Prints a special string
+ * print_special_string - Prints a special string with non-printable characters
  * @list: List of arguments
  * @buffer: Buffer to store characters
  * @index: Current index in the buffer
@@ -15,13 +14,16 @@ int print_special_string(va_list list, char *buffer, int *index, flags_t flags)
     char *str = va_arg(list, char *);
     int i = 0, count = 0;
 
-    (void)flags; // Suppress unused parameter warning
+    (void)flags; /* Suppress unused parameter warning */
+
+    if (str == NULL)
+        str = "(null)";
 
     while (str[i])
     {
         if ((str[i] > 0 && str[i] < 32) || str[i] >= 127)
         {
-            count += sprintf(&buffer[*index], "\\x%02X", str[i]);
+            count += sprintf(&buffer[*index], "\\x%02X", (unsigned char)str[i]);
             *index += 4;
         }
         else
@@ -32,5 +34,6 @@ int print_special_string(va_list list, char *buffer, int *index, flags_t flags)
         i++;
     }
 
-    return count;
+    return (count);
 }
+
