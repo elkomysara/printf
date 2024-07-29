@@ -7,15 +7,16 @@
  * @buffer: Buffer to store characters
  * @index: Current index in the buffer
  * @flags: Flags for formatting
+ * @length_mod: Length modifier for formatting
  * Return: Number of characters printed
  */
-int print_non_printable(va_list list, char *buffer, int *index, flags_t flags)
+int print_non_printable(va_list list, char *buffer, int *index, flags_t flags, length_mod_t length_mod)
 {
     char *str = va_arg(list, char *);
     int i = 0, count = 0;
 
     (void)flags; /* Suppress unused parameter warning */
-
+    (void)length_mod;
     while (str[i])
     {
         if ((str[i] > 0 && str[i] < 32) || str[i] >= 127)

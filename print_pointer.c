@@ -9,7 +9,7 @@
  * @flags: Flags for formatting
  * Return: Number of characters printed
  */
-int print_pointer(va_list list, char *buffer, int *index, flags_t flags)
+int print_pointer(va_list list, char *buffer, int *index, flags_t flags, length_mod_t length_mod)
 {
     void *ptr = va_arg(list, void *);
     unsigned long int addr = (unsigned long int)ptr;
@@ -17,7 +17,7 @@ int print_pointer(va_list list, char *buffer, int *index, flags_t flags)
     int i, digit;
 
     (void)flags; /* Suppress unused parameter warning */
-
+    (void)length_mod;
     _putchar('0', buffer, index);
     _putchar('x', buffer, index);
 

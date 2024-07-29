@@ -55,11 +55,18 @@ void itoa(int num, char *str, int base) {
  * @flags: Flags for formatting
  * Return: Number of characters printed
  */
-int print_integer(va_list list, char *buffer, int *index, flags_t flags)
+int print_integer(va_list list, char *buffer, int *index, flags_t flags, length_mod_t length_mod)
 {
     int num = va_arg(list, int);
     char str[12];
     int i = 0, num_chars = 0;
+
+    if (length_mod.l)
+        num = va_arg(list, long int);
+    else if (length_mod.h)
+        num = (short int)va_arg(list, int);
+    else
+        num = va_arg(list, int);
 
     itoa(num, str, 10);
 

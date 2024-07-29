@@ -9,12 +9,13 @@
  * @flags: Flags for formatting
  * Return: Number of characters printed
  */
-int print_string(va_list list, char *buffer, int *index, flags_t flags)
+int print_string(va_list list, char *buffer, int *index, flags_t flags, length_mod_t length_mod)
 {
     char *str = va_arg(list, char *);
     int num_chars = 0;
 
     (void)flags; /* Flags are not used for strings */
+    (void)length_mod;
 
     if (str == NULL)
         str = "(null)";

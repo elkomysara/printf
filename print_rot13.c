@@ -8,9 +8,10 @@
  * @buffer: Buffer to store characters
  * @index: Current index in the buffer
  * @flags: Flags for formatting
+ * @length_mod: Length modifier for formatting
  * Return: Number of characters printed
  */
-int print_rot13(va_list list, char *buffer, int *index, flags_t flags)
+int print_rot13(va_list list, char *buffer, int *index, flags_t flags, length_mod_t length_mod)
 {
     char *str = va_arg(list, char *);
     int i, j;
@@ -19,7 +20,7 @@ int print_rot13(va_list list, char *buffer, int *index, flags_t flags)
     char out[] = "NOPQRSTUVWXYZABCDEFGHIJKLMnopqrstuvwxyzabcdefghijklm";
 
     (void)flags; /* Suppress unused parameter warning */
-
+    (void)length_mod;
     for (i = 0; str[i]; i++)
     {
         for (j = 0; in[j]; j++)
