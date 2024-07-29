@@ -1,4 +1,5 @@
 
+
 #include "main.h"
 #include <stdlib.h>  /* Include stdlib.h for malloc */
 
@@ -53,12 +54,13 @@ void itoa(int num, char *str, int base) {
  * @buffer: Buffer to store characters
  * @index: Current index in the buffer
  * @flags: Flags for formatting
+ * @length_mod: Length modifier for formatting
  * Return: Number of characters printed
  */
 int print_integer(va_list list, char *buffer, int *index, flags_t flags, length_mod_t length_mod)
 {
-    int num = va_arg(list, int);
-    char str[12];
+    long int num;
+    char str[21]; /* Enough to hold long int in base 10 with sign */
     int i = 0, num_chars = 0;
 
     if (length_mod.l)
@@ -67,6 +69,8 @@ int print_integer(va_list list, char *buffer, int *index, flags_t flags, length_
         num = (short int)va_arg(list, int);
     else
         num = va_arg(list, int);
+
+    
 
     itoa(num, str, 10);
 

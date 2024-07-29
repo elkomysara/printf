@@ -12,22 +12,27 @@
  */
 int print_unsigned(va_list list, char *buffer, int *index, flags_t flags, length_mod_t length_mod)
 {
-    unsigned int n = va_arg(list, unsigned int);
-    int num_chars = 0;
-    char temp[50];
-    int temp_index = 0;
+    unsigned long int num;
+      int num_chars = 0;
+      char *str;
+
+    if (length_mod.l)
+        num = va_arg(list, unsigned long int);
+    else if (length_mod.h)
+        num = (unsigned short int)va_arg(list, unsigned int);
+    else
+        num = va_arg(list, unsigned int);
+
+  
+    str = convert(num, 10, 0);
 
     (void)flags; /* Flags are not used for unsigned integers */
-    (void)length_mod;
-    do {
-        temp[temp_index++] = (n % 10) + '0';
-        n /= 10;
-    } while (n > 0);
 
-    for (temp_index--; temp_index >= 0; temp_index--)
+    while (*str)
     {
-        buffer[*index] = temp[temp_index];
+        buffer[*index] = *str;
         (*index)++;
+        str++;
         num_chars++;
     }
 
