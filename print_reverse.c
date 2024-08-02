@@ -1,5 +1,6 @@
 #include "main.h"
 #include <stdio.h>
+#include <string.h>
 
 /**
  * print_reverse - Prints a string in reverse
@@ -14,7 +15,7 @@
 
 int print_reverse(va_list list, char *buffer, int *index, flags_t flags, length_mod_t length_mod, int width)
 {
-     char *str = va_arg(list, char *);
+    char *str = va_arg(list, char *);
     int len, i, num_chars = 0;
 
     (void)flags; /* Flags are not used for strings */
@@ -25,12 +26,12 @@ int print_reverse(va_list list, char *buffer, int *index, flags_t flags, length_
 
     len = strlen(str);
 
-    if (width > (size_t)strlen(str)) 
+    if (width > len) 
     {
-        int i;
-        for (i = 0; i < width - (size_t)strlen(str); i++)  
+        for (i = 0; i < width - len; i++)  
         {
             _putchar(' ', buffer, index);
+            num_chars++;
         }
     }
 

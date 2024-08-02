@@ -18,6 +18,8 @@ int print_special_string(va_list list, char *buffer, int *index, flags_t flags, 
 
     (void)flags; /* Suppress unused parameter warning */
     (void)length_mod;
+    (void)width;
+
     if (str == NULL)
         str = "(null)";
 
@@ -38,4 +40,3 @@ int print_special_string(va_list list, char *buffer, int *index, flags_t flags, 
 
     return (count);
 }
-

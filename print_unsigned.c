@@ -1,5 +1,6 @@
 #include "main.h"
 #include <stdio.h>
+#include <string.h>
 
 /**
  * print_unsigned - Prints an unsigned integer
@@ -11,11 +12,14 @@
  * @width: Width for formatting
  * Return: Number of characters printed
  */
-int print_unsigned(va_list list, char *buffer, int *index, flags_t flags, length_mod_t length_mod)
+int print_unsigned(va_list list, char *buffer, int *index, flags_t flags, length_mod_t length_mod, int width)
 {
     unsigned long int num;
-      int num_chars = 0;
-      char *str;
+    int num_chars = 0;
+    char *str;
+
+    (void)flags; /* Suppress unused parameter warning */
+    (void)width; /* Suppress unused parameter warning */
 
     if (length_mod.l)
         num = va_arg(list, unsigned long int);
@@ -24,10 +28,17 @@ int print_unsigned(va_list list, char *buffer, int *index, flags_t flags, length
     else
         num = va_arg(list, unsigned int);
 
-  
     str = convert(num, 10, 0);
 
-    (void)flags; /* Flags are not used for unsigned integers */
+    if (width > (int)strlen(str))  
+    {
+        int i;
+        for (i = 0; i < width - (int)strlen(str); i++)  
+        {
+            _putchar(' ', buffer, index);
+            num_chars++;
+        }
+    }
 
     while (*str)
     {
@@ -36,15 +47,6 @@ int print_unsigned(va_list list, char *buffer, int *index, flags_t flags, length
         str++;
         num_chars++;
     }
-          if (width > (int)strlen(str))  
-    {
-        int i;
-        for (i = 0; i < width - (int)strlen(str); i++)  
-        {
-            _putchar(' ', buffer, index);
-        }
-    }
 
-    return (num_chars);
-
+    return num_chars;
 }
