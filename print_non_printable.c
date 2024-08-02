@@ -1,36 +1,60 @@
 #include "main.h"
 #include <stdio.h>
+#include <string.h>
 
 /**
- * print_non_printable - Prints non-printable characters in hexadecimal format
+ * print_non_printable - Prints a string with non-printable characters in hex
  * @list: List of arguments
  * @buffer: Buffer to store characters
  * @index: Current index in the buffer
  * @flags: Flags for formatting
  * @length_mod: Length modifier for formatting
+ * @width: Width for formatting
  * Return: Number of characters printed
  */
-int print_non_printable(va_list list, char *buffer, int *index, flags_t flags, length_mod_t length_mod)
+int print_non_printable(va_list list, char *buffer, int *index, flags_t flags, length_mod_t length_mod, int width)
 {
     char *str = va_arg(list, char *);
-    int i = 0, count = 0;
+    char hex[5];
+    int len, i, num_chars = 0;
 
-    (void)flags; /* Suppress unused parameter warning */
+    (void)flags; /* Flags are not used for non-printable characters */
     (void)length_mod;
-    while (str[i])
+
+    if (str == NULL)
+        str = "(null)";
+
+    len = strlen(str);
+
+    if (width > len)
     {
-        if ((str[i] > 0 && str[i] < 32) || str[i] >= 127)
+        for (i = 0; i < width - len; i++)
         {
-            count += sprintf(&buffer[*index], "\\x%02X", str[i]);
-            *index += 4;
+            _putchar(' ', buffer, index);
+            num_chars++;
+        }
+    }
+
+    while (*str)
+    {
+        if (*str < 32 || *str >= 127)
+        {
+            sprintf(hex, "\\x%02X", (unsigned char)*str);
+            for (i = 0; hex[i]; i++)
+            {
+                buffer[*index] = hex[i];
+                (*index)++;
+                num_chars++;
+            }
         }
         else
         {
-            _putchar(str[i], buffer, index);
-            count++;
+            buffer[*index] = *str;
+            (*index)++;
+            num_chars++;
         }
-        i++;
+        str++;
     }
 
-    return (count);
+    return (num_chars);
 }

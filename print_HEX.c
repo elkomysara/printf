@@ -1,6 +1,7 @@
 
 #include "main.h"
 #include <stdio.h>
+#include <string.h>
 
 /**
  * print_HEX - Prints a number in hexadecimal (uppercase)
@@ -9,29 +10,45 @@
  * @index: Current index in the buffer
  * @flags: Flags for formatting
  * @length_mod: Length modifier for formatting
+ * @width: width for formatting
  * Return: Number of characters printed
  */
-int print_HEX(va_list list, char *buffer, int *index, flags_t flags, length_mod_t length_mod)
+int print_HEX(va_list list, char *buffer, int *index, flags_t flags, length_mod_t length_mod, int width)
 {
-    unsigned int num = va_arg(list, unsigned int);
-    int num_chars = 0;
-    char *str;
-     if (length_mod.l)
-        num = va_arg(list, long int);
+    unsigned long int num;
+     char *str;
+    int num_chars = 0, len ,i;
+   
+
+    if (length_mod.l)
+        num = va_arg(list, unsigned long int);
     else if (length_mod.h)
-        num = (short int)va_arg(list, int);
+        num = (unsigned short int)va_arg(list, unsigned int);
     else
-        num = va_arg(list, int);
+        num = va_arg(list, unsigned int);
+
+    str = convert(num, 16, 0);
+    len = strlen(str);
 
     if (flags.hash && num != 0)
     {
-        buffer[*index] = '0';
-        buffer[*index + 1] = 'X';
-        *index += 2;
-        num_chars += 2;
+    _putchar('0', buffer, index);
+    _putchar('X', buffer, index);
+    num_chars += 2;
+    if (width > 0)
+        width -= 2;
     }
 
-    str = convert(num, 16, 0);
+
+    if (width > len)
+    {
+       for (i = 0; i < width - len; i++)
+    {
+            _putchar(' ', buffer, index);
+            num_chars++;
+    }
+    }
+
     while (*str)
     {
         buffer[*index] = *str;

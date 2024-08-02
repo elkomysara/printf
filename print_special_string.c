@@ -8,9 +8,10 @@
  * @index: Current index in the buffer
  * @flags: Flags for formatting
  * @length_mod: Length modifier for formatting
+ * @width: Width for formatting
  * Return: Number of characters printed
  */
-int print_special_string(va_list list, char *buffer, int *index, flags_t flags, length_mod_t length_mod)
+int print_special_string(va_list list, char *buffer, int *index, flags_t flags, length_mod_t length_mod, int width)
 {
     char *str = va_arg(list, char *);
     int i = 0, count = 0;

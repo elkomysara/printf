@@ -2,6 +2,7 @@
 
 #include "main.h"
 #include <stdlib.h>  /* Include stdlib.h for malloc */
+#include <string.h>
 
 /* Helper function to implement itoa since it's not standard in C */
 void itoa(int num, char *str, int base) {
@@ -55,13 +56,15 @@ void itoa(int num, char *str, int base) {
  * @index: Current index in the buffer
  * @flags: Flags for formatting
  * @length_mod: Length modifier for formatting
+ * @width: Width for formatting
  * Return: Number of characters printed
  */
-int print_integer(va_list list, char *buffer, int *index, flags_t flags, length_mod_t length_mod)
+int print_integer(va_list list, char *buffer, int *index, flags_t flags, length_mod_t length_mod, int width)
 {
     long int num;
     char str[21]; /* Enough to hold long int in base 10 with sign */
     int i = 0, num_chars = 0;
+    int len;
 
     if (length_mod.l)
         num = va_arg(list, long int);
@@ -70,9 +73,22 @@ int print_integer(va_list list, char *buffer, int *index, flags_t flags, length_
     else
         num = va_arg(list, int);
 
-    
-
     itoa(num, str, 10);
+
+    /* Handle width */
+    len = strlen(str);
+    if (width > len)
+    {
+        int pad = width - len;
+        if (flags.plus || flags.space)
+        {
+            pad--;
+        }
+        for (i = 0; i < pad; i++)
+        {
+            _putchar(' ', buffer, index);
+        }
+    }
 
     /* Handle the space and plus flags */
     if (flags.plus && num >= 0)
@@ -86,6 +102,7 @@ int print_integer(va_list list, char *buffer, int *index, flags_t flags, length_
         num_chars++;
     }
 
+    i = 0;  /* Reset i to 0 for the next loop */
     while (str[i])
     {
         _putchar(str[i], buffer, index);
@@ -93,5 +110,5 @@ int print_integer(va_list list, char *buffer, int *index, flags_t flags, length_
         num_chars++;
     }
 
-    return (num_chars);
+    return (num_chars + (width > len ? width - len : 0));
 }

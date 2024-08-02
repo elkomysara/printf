@@ -1,5 +1,6 @@
 #include "main.h"
 #include <stdio.h>
+#include <string.h>
 
 /**
  * print_pointer - Prints a pointer address
@@ -7,17 +8,20 @@
  * @buffer: Buffer to store characters
  * @index: Current index in the buffer
  * @flags: Flags for formatting
+ * @length_mod: Length modifier for formatting
+ * @width: Width for formatting
  * Return: Number of characters printed
  */
-int print_pointer(va_list list, char *buffer, int *index, flags_t flags, length_mod_t length_mod)
+int print_pointer(va_list list, char *buffer, int *index, flags_t flags, length_mod_t length_mod, int width)
 {
     void *ptr = va_arg(list, void *);
     unsigned long int addr = (unsigned long int)ptr;
     char hex[17];
-    int i, digit;
+    int i, digit, num_chars = 2; 
 
     (void)flags; /* Suppress unused parameter warning */
     (void)length_mod;
+
     _putchar('0', buffer, index);
     _putchar('x', buffer, index);
 
@@ -32,7 +36,18 @@ int print_pointer(va_list list, char *buffer, int *index, flags_t flags, length_
     while (i < 16)
     {
         _putchar(hex[i++], buffer, index);
+        num_chars++;
     }
 
-    return (2 + 15 - i);
+    /* Handle width */
+    if (width > num_chars)
+    {
+        for (i = 0; i < width - num_chars; i++)
+        {
+            _putchar(' ', buffer, index);
+            num_chars++;
+        }
+    }
+
+    return num_chars;
 }

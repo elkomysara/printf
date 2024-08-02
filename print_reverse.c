@@ -8,22 +8,37 @@
  * @index: Current index in the buffer
  * @flags: Flags for formatting
  * @length_mod: Length modifier for formatting 
+ * @width: Width for formatting
  * Return: Number of characters printed
  */
 
-int print_reverse(va_list list, char *buffer, int *index, flags_t flags, length_mod_t length_mod)
+int print_reverse(va_list list, char *buffer, int *index, flags_t flags, length_mod_t length_mod, int width)
 {
-    char *str = va_arg(list, char *);
-    int len = 0, i;
+     char *str = va_arg(list, char *);
+    int len, i, num_chars = 0;
 
-    (void)flags; /* Suppress unused parameter warning */
+    (void)flags; /* Flags are not used for strings */
     (void)length_mod;
-    while (str[len])
-        len++;
+
+    if (str == NULL)
+        str = "(null)";
+
+    len = strlen(str);
+
+    if (width > (size_t)strlen(str)) 
+    {
+        int i;
+        for (i = 0; i < width - (size_t)strlen(str); i++)  
+        {
+            _putchar(' ', buffer, index);
+        }
+    }
 
     for (i = len - 1; i >= 0; i--)
+    {
         _putchar(str[i], buffer, index);
+        num_chars++;
+    }
 
-    return (len);
+    return (num_chars);
 }
-

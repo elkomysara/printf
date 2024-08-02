@@ -1,5 +1,6 @@
 #include "main.h"
 #include <stdio.h>
+#include <string.h>
 
 /**
  * print_octal - Prints a number in octal
@@ -8,29 +9,44 @@
  * @index: Current index in the buffer
  * @flags: Flags for formatting
  * @length_mod: Length modifier for formatting
+ * @width: Width for formatting
  * Return: Number of characters printed
  */
-int print_octal(va_list list, char *buffer, int *index, flags_t flags, length_mod_t length_mod)
+int print_octal(va_list list, char *buffer, int *index, flags_t flags, length_mod_t length_mod, int width)
 {
-    unsigned int num = va_arg(list, unsigned int);
-    int num_chars = 0;
+    unsigned long int num ;
     char *str;
+    int num_chars = 0, len, i;
+    
 
     if (length_mod.l)
-        num = va_arg(list, long int);
+        num = va_arg(list, unsigned long int);
     else if (length_mod.h)
-        num = (short int)va_arg(list, int);
+        num = (unsigned short int)va_arg(list, unsigned int);
     else
-        num = va_arg(list, int);
+        num = va_arg(list, unsigned int);
+
+    str = convert(num, 8, 0);
+    len = strlen(str);
 
     if (flags.hash && num != 0)
     {
-        buffer[*index] = '0';
-        (*index)++;
+         _putchar('0', buffer, index);
         num_chars++;
+        if (width > 0)
+            width--;
     }
 
-    str = convert(num, 8, 0);
+   
+    if (width > len)
+    {
+        for (i = 0; i < width - len; i++)
+        {
+            _putchar(' ', buffer, index);
+            num_chars++;
+        }
+    }
+
     while (*str)
     {
         buffer[*index] = *str;

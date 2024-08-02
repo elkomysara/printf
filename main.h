@@ -39,7 +39,7 @@ typedef struct length_mod
 typedef struct convert
 {
     char *sym;
-    int (*f)(va_list, char *, int *, flags_t, length_mod_t);
+    int (*f)(va_list, char *, int *, flags_t, length_mod_t, int);
 } conver_t;
 
 int _printf(const char *format, ...);
@@ -48,22 +48,23 @@ int _putchar(char c, char *buffer, int *index);
 char *convert(unsigned long int num, int base, int lowercase);
 flags_t parse_flags(const char *format, int *i);
 length_mod_t parse_length_mod(const char *format, int *i);
+int parse_width(const char *format, int *i, va_list arg_list);
 
 /* Function prototypes */
 int _printf(const char *format, ...);
-int print_char(va_list l, char *buf, int *i, flags_t, length_mod_t);
-int print_string(va_list l, char *buf, int *i, flags_t, length_mod_t);
-int print_percent(va_list l, char *buf, int *i, flags_t, length_mod_t);
-int print_integer(va_list l, char *buf, int *i, flags_t, length_mod_t);
-int print_unsigned(va_list l, char *buf, int *i, flags_t, length_mod_t);
-int print_binary(va_list l, char *buf, int *i, flags_t, length_mod_t);
-int print_octal(va_list l, char *buf, int *i, flags_t, length_mod_t);
-int print_hex(va_list l, char *buf, int *i, flags_t, length_mod_t);
-int print_HEX(va_list l, char *buf, int *i, flags_t, length_mod_t);
-int print_pointer(va_list l, char *buf, int *i, flags_t, length_mod_t);
-int print_reverse(va_list l, char *buf, int *i, flags_t, length_mod_t);
-int print_rot13(va_list l, char *buf, int *i, flags_t, length_mod_t);
-int print_non_printable(va_list l, char *buf, int *i, flags_t, length_mod_t);
-int print_special_string(va_list, char *, int *, flags_t, length_mod_t);
+int print_char(va_list l, char *buf, int *i, flags_t, length_mod_t, int);
+int print_string(va_list l, char *buf, int *i, flags_t, length_mod_t, int);
+int print_percent(va_list l, char *buf, int *i, flags_t, length_mod_t, int);
+int print_integer(va_list l, char *buf, int *i, flags_t, length_mod_t, int);
+int print_unsigned(va_list l, char *buf, int *i, flags_t, length_mod_t, int);
+int print_binary(va_list l, char *buf, int *i, flags_t, length_mod_t, int);
+int print_octal(va_list l, char *buf, int *i, flags_t, length_mod_t, int);
+int print_hex(va_list l, char *buf, int *i, flags_t, length_mod_t, int);
+int print_HEX(va_list l, char *buf, int *i, flags_t, length_mod_t, int);
+int print_pointer(va_list l, char *buf, int *i, flags_t, length_mod_t, int);
+int print_reverse(va_list l, char *buf, int *i, flags_t, length_mod_t, int);
+int print_rot13(va_list l, char *buf, int *i, flags_t, length_mod_t, int);
+int print_non_printable(va_list l, char *buf, int *i, flags_t, length_mod_t, int);
+int print_special_string(va_list, char *, int *, flags_t, length_mod_t, int);
 
 #endif /* MAIN_H */

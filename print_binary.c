@@ -1,5 +1,6 @@
 #include "main.h"
 #include <stdio.h>
+#include <string.h>
 
 /**
  * print_binary - Prints a number in binary
@@ -8,9 +9,10 @@
  * @index: Current index in the buffer
  * @flags: Flags for formatting
  * @length_mod: Length modifier for formatting
+ * @width: Width for formatting
  * Return: Number of characters printed
  */
-int print_binary(va_list list, char *buffer, int *index, flags_t flags, length_mod_t length_mod)
+int print_binary(va_list list, char *buffer, int *index, flags_t flags, length_mod_t length_mod, int width)
 {
     unsigned int num = va_arg(list, unsigned int);
     int num_chars = 0;
@@ -24,6 +26,15 @@ int print_binary(va_list list, char *buffer, int *index, flags_t flags, length_m
         (*index)++;
         str++;
         num_chars++;
+    }
+
+     if (width > (int)strlen(str))  
+    {
+        int i;
+        for (i = 0; i < width - (int)strlen(str); i++)  
+        {
+            _putchar(' ', buffer, index);
+        }
     }
 
     return (num_chars);

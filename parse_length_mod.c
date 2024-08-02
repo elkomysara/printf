@@ -17,4 +17,3 @@ length_mod_t parse_length_mod(const char *format, int *i)
 
     return length_mod;
 }
-
