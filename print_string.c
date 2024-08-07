@@ -12,7 +12,7 @@
  * @width: Width for formatting
  * Return: Number of characters printed
  */
-int print_string(va_list list, char *buffer, int *index, flags_t flags, length_mod_t length_mod, int width)
+int print_string(va_list list, char *buffer, int *index, flags_t flags, length_mod_t length_mod, int width, int precision)
 {
     char *str = va_arg(list, char *);
     int len, i, num_chars = 0;
@@ -24,6 +24,11 @@ int print_string(va_list list, char *buffer, int *index, flags_t flags, length_m
         str = "(null)";
 
     len = strlen(str);
+        /* Respect precision */
+    if (precision >= 0 && precision < len)
+        len = precision;
+
+
 
     if (width > len)
     {
@@ -34,11 +39,9 @@ int print_string(va_list list, char *buffer, int *index, flags_t flags, length_m
         }
     }
     
-    while (*str)
+    for (i = 0; i < len; i++)
     {
-        buffer[*index] = *str;
-        (*index)++;
-        str++;
+        _putchar(str[i], buffer, index);
         num_chars++;
     }
 

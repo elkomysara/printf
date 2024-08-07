@@ -12,13 +12,13 @@
  * @width: Width for formatting
  * Return: Number of characters printed
  */
-int print_octal(va_list list, char *buffer, int *index, flags_t flags, length_mod_t length_mod, int width)
+int print_octal(va_list list, char *buffer, int *index, flags_t flags, length_mod_t length_mod, int width, int precision)
 {
     unsigned long int num ;
     char *str;
     int num_chars = 0, len, i;
     
-
+     (void)precision;
     if (length_mod.l)
         num = va_arg(list, unsigned long int);
     else if (length_mod.h)

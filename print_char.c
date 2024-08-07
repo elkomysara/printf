@@ -11,13 +11,14 @@
  * @width: Width for formatting
  * Return: Number of characters printed
  */
-int print_char(va_list list, char *buffer, int *index, flags_t flags, length_mod_t length_mod, int width)
+int print_char(va_list list, char *buffer, int *index, flags_t flags, length_mod_t length_mod, int width, int precision)
 {
     char c = va_arg(list, int);
     int i;
 
     (void)flags; /* Flags are not used for characters */
     (void)length_mod;
+    (void)precision;
 
     if (width > 1)
     {

@@ -11,12 +11,13 @@
  * @index: Current index in the buffer
  * Return: Number of characters printed
  */
+ 
 int format_reciever(const char *format, conver_t f_list[], va_list arg_list, char *buffer, int *index)
 {
     int i = 0, j, printed_chars = 0;
     flags_t flags;
     length_mod_t length_mod;
-    int width;
+    int width, precision;
 
     while (format[i])
     {
@@ -26,12 +27,13 @@ int format_reciever(const char *format, conver_t f_list[], va_list arg_list, cha
             flags = parse_flags(format, &i);
             length_mod = parse_length_mod(format, &i);
             width = parse_width(format, &i, arg_list);
+            precision = parse_precision(format, &i); /* Parse precision */
 
             for (j = 0; f_list[j].sym != NULL; j++)
             {
                 if (format[i] == f_list[j].sym[0])
                 {
-                    printed_chars += f_list[j].f(arg_list, buffer, index, flags, length_mod, width);
+                    printed_chars += f_list[j].f(arg_list, buffer, index, flags, length_mod, width, precision);
                     break;
                 }
             }

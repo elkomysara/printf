@@ -59,12 +59,14 @@ void itoa(int num, char *str, int base) {
  * @width: Width for formatting
  * Return: Number of characters printed
  */
-int print_integer(va_list list, char *buffer, int *index, flags_t flags, length_mod_t length_mod, int width)
+ 
+int print_integer(va_list list, char *buffer, int *index, flags_t flags, length_mod_t length_mod, int width, int precision)
 {
     long int num;
     char str[21]; /* Enough to hold long int in base 10 with sign */
-    int i = 0, num_chars = 0;
-    int len;
+    int i = 0, len, num_chars = 0;
+
+    /* Get the number based on length modifier */
 
     if (length_mod.l)
         num = va_arg(list, long int);
@@ -73,24 +75,27 @@ int print_integer(va_list list, char *buffer, int *index, flags_t flags, length_
     else
         num = va_arg(list, int);
 
-    itoa(num, str, 10);
+    /* convert int to string */
 
-    /* Handle width */
+    itoa(num, str, 10);
     len = strlen(str);
-    if (width > len)
-    {
-        int pad = width - len;
-        if (flags.plus || flags.space)
-        {
-            pad--;
-        }
-        for (i = 0; i < pad; i++)
-        {
-            _putchar(' ', buffer, index);
+
+    /* Handle the precision */
+    
+    if (precision >= 0) {
+        int num_zeros = precision - len + (num < 0);  /* Calculate leading zeros needed */
+        if (num_zeros > 0) {
+            /* Shift existing number to the right */
+            memmove(str + num_zeros, str, len + 1);
+            /* Add leading zeros */
+            for (i = 0; i < num_zeros; i++) {
+                str[i + (num < 0)] = '0';  /* Add zero after the sign if number is negative */
+            }
+            len += num_zeros;
         }
     }
 
-    /* Handle the space and plus flags */
+    /* Handle space and plus flags */
     if (flags.plus && num >= 0)
     {
         _putchar('+', buffer, index);
@@ -102,13 +107,26 @@ int print_integer(va_list list, char *buffer, int *index, flags_t flags, length_
         num_chars++;
     }
 
-    i = 0;  /* Reset i to 0 for the next loop */
-    while (str[i])
+    
+    if (num < 0) len--; /* Exclude sign for width/precision */
+
+
+    /* Handle width */
+    if (width > len + num_chars)
+    {
+        for (i = 0; i < width - len - num_chars; i++)
+        {
+            _putchar(' ', buffer, index);
+            num_chars++;
+        }
+    }
+
+    /* Print number */
+    for (i = 0; i < len; i++)
     {
         _putchar(str[i], buffer, index);
-        i++;
         num_chars++;
     }
 
-    return (num_chars + (width > len ? width - len : 0));
+    return (num_chars);
 }

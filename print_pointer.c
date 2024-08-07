@@ -12,7 +12,7 @@
  * @width: Width for formatting
  * Return: Number of characters printed
  */
-int print_pointer(va_list list, char *buffer, int *index, flags_t flags, length_mod_t length_mod, int width)
+int print_pointer(va_list list, char *buffer, int *index, flags_t flags, length_mod_t length_mod, int width, int precision)
 {
     void *ptr = va_arg(list, void *);
     unsigned long int addr = (unsigned long int)ptr;
@@ -21,6 +21,7 @@ int print_pointer(va_list list, char *buffer, int *index, flags_t flags, length_
 
     (void)flags; /* Suppress unused parameter warning */
     (void)length_mod;
+    (void)precision;
 
     _putchar('0', buffer, index);
     _putchar('x', buffer, index);

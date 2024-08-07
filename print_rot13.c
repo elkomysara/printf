@@ -12,7 +12,7 @@
  * @width: Width for formatting
  * Return: Number of characters printed
  */
-int print_rot13(va_list list, char *buffer, int *index, flags_t flags, length_mod_t length_mod, int width)
+int print_rot13(va_list list, char *buffer, int *index, flags_t flags, length_mod_t length_mod, int width, int precision)
 {
     char *str = va_arg(list, char *);
     char in[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
@@ -21,6 +21,7 @@ int print_rot13(va_list list, char *buffer, int *index, flags_t flags, length_mo
 
     (void)flags; /* Flags are not used for rot13 */
     (void)length_mod;
+    (void)precision;
 
     if (str == NULL)
         str = "(null)";

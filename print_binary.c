@@ -12,7 +12,7 @@
  * @width: Width for formatting
  * Return: Number of characters printed
  */
-int print_binary(va_list list, char *buffer, int *index, flags_t flags, length_mod_t length_mod, int width)
+int print_binary(va_list list, char *buffer, int *index, flags_t flags, length_mod_t length_mod, int width, int precision)
 {
     unsigned int num = va_arg(list, unsigned int);
     int num_chars = 0;
@@ -20,6 +20,7 @@ int print_binary(va_list list, char *buffer, int *index, flags_t flags, length_m
 
     (void)flags; /* Flags are not used for binary */
     (void)length_mod;
+    (void)precision;
     while (*str)
     {
         buffer[*index] = *str;

@@ -13,13 +13,14 @@
  * Return: Number of characters printed
  */
 
-int print_reverse(va_list list, char *buffer, int *index, flags_t flags, length_mod_t length_mod, int width)
+int print_reverse(va_list list, char *buffer, int *index, flags_t flags, length_mod_t length_mod, int width, int precision)
 {
     char *str = va_arg(list, char *);
     int len, i, num_chars = 0;
 
     (void)flags; /* Flags are not used for strings */
     (void)length_mod;
+    (void)precision;
 
     if (str == NULL)
         str = "(null)";

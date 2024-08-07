@@ -11,7 +11,7 @@
  * @width: Width for formatting
  * Return: Number of characters printed
  */
-int print_special_string(va_list list, char *buffer, int *index, flags_t flags, length_mod_t length_mod, int width)
+int print_special_string(va_list list, char *buffer, int *index, flags_t flags, length_mod_t length_mod, int width, int precision)
 {
     char *str = va_arg(list, char *);
     int i = 0, count = 0;
@@ -19,6 +19,7 @@ int print_special_string(va_list list, char *buffer, int *index, flags_t flags, 
     (void)flags; /* Suppress unused parameter warning */
     (void)length_mod;
     (void)width;
+    (void)precision;
 
     if (str == NULL)
         str = "(null)";
