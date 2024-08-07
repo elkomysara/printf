@@ -1,7 +1,5 @@
 #include "main.h"
 
-#include "main.h"
-
 /**
 * format_reciever - Receives the format and
 * the argument list, then calls the appropriate function
@@ -20,25 +18,31 @@ for (i = 0; format[i] != '\0'; i++)
 {
 if (format[i] == '%')
 {
+int found = 0;
 for (j = 0; f_list[j].sym != NULL; j++)
 {
 if (format[i + 1] == f_list[j].sym[0])
 {
 printed_chars += f_list[j].f(arg_list);
 i++;
+found = 1;
 break;
 }
 }
-if (f_list[j].sym == NULL && format[i + 1] != ' ' && format[i + 1] != '\0')
+if (!found)
 {
-_putchar('%');
+if (format[i + 1] != '\0')
+{
+_putchar(format[i]);
 _putchar(format[i + 1]);
 printed_chars += 2;
 i++;
 }
-else if (f_list[j].sym == NULL && format[i + 1] == '\0')
+else
 {
-return (-1);
+_putchar(format[i]);
+printed_chars++;
+}
 }
 }
 else

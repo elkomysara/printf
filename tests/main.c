@@ -29,8 +29,8 @@ len1 = _printf("%%");
 len2 = printf("%%");
 printf("Returned: _printf: %d, printf: %d\n", len1, len2);
 
-len1 = _printf("Unsupported specifier: %q\n");
-len2 = printf("Unsupported specifier: %q\n");
+len1 = _printf("Unsupported specifier: %q");
+len2 = printf("Unsupported specifier: %q");
 printf("Returned: _printf: %d, printf: %d\n", len1, len2);
 
 return (0);
