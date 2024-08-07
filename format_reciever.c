@@ -1,5 +1,7 @@
 #include "main.h"
 
+#include "main.h"
+
 /**
 * format_reciever - Receives the format and
 * the argument list, then calls the appropriate function
@@ -27,10 +29,16 @@ i++;
 break;
 }
 }
-if (f_list[j].sym == NULL && format[i + 1] != ' ')
+if (f_list[j].sym == NULL && format[i + 1] != ' ' && format[i + 1] != '\0')
 {
-_putchar(format[i]);
-printed_chars++;
+_putchar('%');
+_putchar(format[i + 1]);
+printed_chars += 2;
+i++;
+}
+else if (f_list[j].sym == NULL && format[i + 1] == '\0')
+{
+return (-1);
 }
 }
 else
