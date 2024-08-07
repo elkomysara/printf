@@ -1,55 +1,41 @@
 #include "main.h"
-#include <stdio.h>
 
 /**
- * format_reciever - Receives the main string and necessary parameters to
- * print a formatted string
- * @format: A string containing all the desired characters
- * @f_list: List of format specifiers and their corresponding functions
- * @arg_list: List of arguments
- * @buffer: Buffer to store characters
- * @index: Current index in the buffer
- * Return: Number of characters printed
- */
- 
-int format_reciever(const char *format, conver_t f_list[], va_list arg_list, char *buffer, int *index)
-{
-    int i = 0, j, printed_chars = 0;
-    flags_t flags;
-    length_mod_t length_mod;
-    int width, precision;
+* format_reciever - Receives the format and the argument list, then calls the appropriate function
+* @format: The format string
+* @f_list: List of conversion specifiers and associated functions
+* @arg_list: Argument list
+* Return: The number of characters printed
+*/
 
-    while (format[i])
+
+int format_reciever(const char *format, conver_t f_list[], va_list arg_list)
+{
+    int i, j, printed_chars = 0;
+
+    for (i = 0; format[i] != '\0'; i++)
     {
         if (format[i] == '%')
         {
-            i++;
-            flags = parse_flags(format, &i);
-            length_mod = parse_length_mod(format, &i);
-            width = parse_width(format, &i, arg_list);
-            precision = parse_precision(format, &i); /* Parse precision */
-
             for (j = 0; f_list[j].sym != NULL; j++)
             {
-                if (format[i] == f_list[j].sym[0])
+                if (format[i + 1] == f_list[j].sym[0])
                 {
-                    printed_chars += f_list[j].f(arg_list, buffer, index, flags, length_mod, width, precision);
+                    printed_chars += f_list[j].f(arg_list);
+                    i++;
                     break;
                 }
             }
-            if (f_list[j].sym == NULL)
+            if (f_list[j].sym == NULL && format[i + 1] != ' ')
             {
-                _putchar('%', buffer, index);
-                _putchar(format[i], buffer, index);
-                printed_chars += 2;
+                _putchar(format[i]);
+                printed_chars++;
             }
-            i++;
         }
         else
         {
-            _putchar(format[i], buffer, index);
+            _putchar(format[i]);
             printed_chars++;
-            i++;
         }
     }
     return (printed_chars);
