@@ -1,14 +1,12 @@
 #include "main.h"
 
 /**
-* format_reciever - Receives the format and
-* the argument list, then calls the appropriate function
+* format_reciever - Receives the format and the argument list, then calls the appropriate function
 * @format: The format string
 * @f_list: List of conversion specifiers and associated functions
 * @arg_list: Argument list
 * Return: The number of characters printed
 */
-
 int format_reciever(const char *format, conver_t f_list[], va_list arg_list)
 {
 int i, j, printed_chars = 0;
@@ -26,16 +24,10 @@ i++;
 break;
 }
 }
-if (f_list[j].sym == NULL && format[i + 1] != ' ' && format[i + 1] != '\0')
+if (f_list[j].sym == NULL && format[i + 1] != ' ')
 {
-_putchar('%');
-_putchar(format[i + 1]);
-printed_chars += 2;
-i++;
-}
-else if (f_list[j].sym == NULL && format[i + 1] == '\0')
-{
-return (-1);
+_putchar(format[i]);
+printed_chars++;
 }
 }
 else
@@ -46,3 +38,4 @@ printed_chars++;
 }
 return (printed_chars);
 }
+
