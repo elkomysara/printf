@@ -1,4 +1,4 @@
-#include "main.h"
+#include "../main.h"
 #include <stdio.h>
 
 /**
@@ -36,5 +36,5 @@ len1 = _printf("Number: %i\n", num);
 len2 = printf("Number: %i\n", num);
 printf("Returned: _printf: %d, printf: %d\n", len1, len2);
 
-return 0;
+return (0);
 }
