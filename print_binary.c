@@ -2,17 +2,16 @@
 #include <stdarg.h>
 
 /**
-* print_HEX - Prints an unsigned integer in hexadecimal notation (uppercase)
+* print_binary - Converts an unsigned int to binary
 * @list: list of arguments
 * @buffer: buffer to store the output
 * @index: index in the buffer
 * Return: Will return the number of characters printed
 */
-
-int print_HEX(va_list list, char *buffer, int *index)
+int print_binary(va_list list, char *buffer, int *index)
 {
 unsigned int num = va_arg(list, unsigned int);
-char temp[12];
+char bin_str[32];
 int i = 0, len = 0;
 
 if (num == 0)
@@ -23,12 +22,15 @@ return (1);
 
 while (num != 0)
 {
-temp[i++] = (num % 16) + (num % 16 < 10 ? '0' : 'A' - 10);
-num /= 16;
+bin_str[i++] = (num % 2) + '0';
+num /= 2;
 }
 
 while (i--)
-_putchar(temp[i], buffer, index);
+{
+_putchar(bin_str[i], buffer, index);
+len++;
+}
 
-return (len + i);
+return (len);
 }
