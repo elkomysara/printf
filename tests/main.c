@@ -2,11 +2,10 @@
 #include <stdio.h>
 
 /**
-* main - Entry point
+* main - Entry point for testing the _printf function
 *
 * Return: Always 0
 */
-
 int main(void)
 {
 int len1, len2;
