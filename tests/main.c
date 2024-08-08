@@ -10,6 +10,8 @@ int main(void)
 {
 int len1, len2;
 int num = -12345;
+int max = INT_MAX;
+int min = INT_MIN;
 
 len1 = _printf("Hello %%\n");
 len2 = printf("Hello %%\n");
@@ -33,6 +35,14 @@ printf("Returned: _printf: %d, printf: %d\n", len1, len2);
 
 len1 = _printf("Number: %i\n", num);
 len2 = printf("Number: %i\n", num);
+printf("Returned: _printf: %d, printf: %d\n", len1, len2);
+
+len1 = _printf("Max int: %d\n", max);
+len2 = printf("Max int: %d\n", max);
+printf("Returned: _printf: %d, printf: %d\n", len1, len2);
+
+len1 = _printf("Min int: %d\n", min);
+len2 = printf("Min int: %d\n", min);
 printf("Returned: _printf: %d, printf: %d\n", len1, len2);
 
 return (0);

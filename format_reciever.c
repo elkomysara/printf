@@ -38,8 +38,7 @@ i++;
 }
 else
 {
-_putchar(format[i]);
-printed_chars++;
+return (-1);
 }
 }
 }
