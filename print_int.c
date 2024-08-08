@@ -17,7 +17,6 @@ if (num < 0)
 _putchar('-');
 num = -num;
 negative = 1;
-len++;
 }
 
 if (num == 0)
@@ -33,7 +32,10 @@ num /= 10;
 }
 
 while (i--)
+{
 _putchar(buffer[i]);
+len++;
+}
 
-return (len + i + negative);
+return (len + negative);
 }
