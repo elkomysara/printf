@@ -12,28 +12,26 @@
 * @sym: The operator
 * @f: The function associated
 */
+
 struct convert
 {
 char *sym;
-int (*f)(va_list, char *, int *);
+int (*f)(va_list);
 };
 typedef struct convert conver_t;
 
 int _printf(const char *format, ...);
-int _putchar(char c, char *buffer, int *index);
-int format_reciever(const char *format, conver_t f_list[],
-va_list arg_list, char *buffer, int *index);
-void handle_percent(const char *format, int *i, conver_t f_list[],
-va_list arg_list, char *buffer, int *index, int *printed_chars);
-int print_percent(va_list list, char *buffer, int *index);
-int print_char(va_list list, char *buffer, int *index);
-int print_string(va_list list, char *buffer, int *index);
-int print_int(va_list list, char *buffer, int *index);
-int print_unsigned(va_list list, char *buffer, int *index);
-int print_octal(va_list list, char *buffer, int *index);
-int print_hex(va_list list, char *buffer, int *index);
-int print_HEX(va_list list, char *buffer, int *index);
-int print_pointer(va_list list, char *buffer, int *index);
-int print_binary(va_list list, char *buffer, int *index);
+int _putchar(char c);
+int format_reciever(const char *format, conver_t f_list[], va_list arg_list);
+int print_percent(va_list);
+int print_char(va_list);
+int print_string(va_list);
+int print_int(va_list);
+int print_unsigned(va_list);
+int print_octal(va_list);
+int print_hex(va_list);
+int print_HEX(va_list);
+int print_pointer(va_list);
 
 #endif /* MAIN_H */
+

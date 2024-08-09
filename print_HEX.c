@@ -1,34 +1,32 @@
+
 #include "main.h"
 #include <stdarg.h>
 
 /**
 * print_HEX - Prints an unsigned integer in hexadecimal notation (uppercase)
 * @list: list of arguments
-* @buffer: buffer to store the output
-* @index: index in the buffer
 * Return: Will return the number of characters printed
 */
-
-int print_HEX(va_list list, char *buffer, int *index)
+int print_HEX(va_list list)
 {
 unsigned int num = va_arg(list, unsigned int);
-char temp[12];
+char buffer[12];
 int i = 0, len = 0;
 
 if (num == 0)
 {
-_putchar('0', buffer, index);
+_putchar('0');
 return (1);
 }
 
 while (num != 0)
 {
-temp[i++] = (num % 16) + (num % 16 < 10 ? '0' : 'A' - 10);
+buffer[i++] = (num % 16) + (num % 16 < 10 ? '0' : 'A' - 10);
 num /= 16;
 }
 
 while (i--)
-_putchar(temp[i], buffer, index);
+_putchar(buffer[i]);
 
 return (len + i);
 }

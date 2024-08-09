@@ -1,46 +1,49 @@
-#include <limits.h>
-#include <stdio.h>
 #include "../main.h"
+#include <stdio.h>
 
 /**
-* main - Entry point
+* main - Entry point for testing the _printf function
 *
 * Return: Always 0
 */
 int main(void)
 {
-int len;
-int len2;
-unsigned int ui;
-void *addr;
+int len1, len2;
+int num = -12345;
+int max = INT_MAX;
+int min = INT_MIN;
 
-len = _printf("Let's try to printf a simple sentence.\n");
-len2 = printf("Let's try to printf a simple sentence.\n");
-ui = (unsigned int)INT_MAX + 1024;
-addr = (void *)0x7ffe637541f0;
-_printf("Length:[%d, %i]\n", len, len);
-printf("Length:[%d, %i]\n", len2, len2);
-_printf("Negative:[%d]\n", -762534);
-printf("Negative:[%d]\n", -762534);
-_printf("Unsigned:[%u]\n", ui);
-printf("Unsigned:[%u]\n", ui);
-_printf("Unsigned octal:[%o]\n", ui);
-printf("Unsigned octal:[%o]\n", ui);
-_printf("Unsigned hexadecimal:[%x, %X]\n", ui, ui);
-printf("Unsigned hexadecimal:[%x, %X]\n", ui, ui);
-_printf("Character:[%c]\n", 'H');
-printf("Character:[%c]\n", 'H');
-_printf("String:[%s]\n", "I am a string !");
-printf("String:[%s]\n", "I am a string !");
-_printf("Address:[%p]\n", addr);
-printf("Address:[%p]\n", addr);
-len = _printf("Percent:[%%]\n");
-len2 = printf("Percent:[%%]\n");
-_printf("Len:[%d]\n", len);
-printf("Len:[%d]\n", len2);
-_printf("Unknown:[%r]\n");
-printf("Unknown:[%r]\n");
-_printf("Binary:[%b]\n", 98);
-printf("Binary:[1100010]\n");
+len1 = _printf("Hello %%\n");
+len2 = printf("Hello %%\n");
+printf("Returned: _printf: %d, printf: %d\n", len1, len2);
+
+len1 = _printf("%s\n", NULL);
+len2 = printf("%s\n", NULL);
+printf("Returned: _printf: %d, printf: %d\n", len1, len2);
+
+len1 = _printf("%%\n");
+len2 = printf("%%\n");
+printf("Returned: _printf: %d, printf: %d\n", len1, len2);
+
+len1 = _printf("Unsupported specifier: %q\n");
+len2 = printf("Unsupported specifier: %q\n");
+printf("Returned: _printf: %d, printf: %d\n", len1, len2);
+
+len1 = _printf("Number: %d\n", num);
+len2 = printf("Number: %d\n", num);
+printf("Returned: _printf: %d, printf: %d\n", len1, len2);
+
+len1 = _printf("Number: %i\n", num);
+len2 = printf("Number: %i\n", num);
+printf("Returned: _printf: %d, printf: %d\n", len1, len2);
+
+len1 = _printf("Max int: %d\n", max);
+len2 = printf("Max int: %d\n", max);
+printf("Returned: _printf: %d, printf: %d\n", len1, len2);
+
+len1 = _printf("Min int: %d\n", min);
+len2 = printf("Min int: %d\n", min);
+printf("Returned: _printf: %d, printf: %d\n", len1, len2);
+
 return (0);
 }

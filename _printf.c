@@ -20,22 +20,16 @@ conver_t f_list[] = {
 {"x", print_hex},
 {"X", print_HEX},
 {"p", print_pointer},
-{"b", print_binary},
 {NULL, NULL},
 };
 va_list arg_list;
-char buffer[1024];
-int index = 0;
 
 if (format == NULL)
 return (-1);
 
 va_start(arg_list, format);
-printed_chars = format_reciever(format, f_list, arg_list, buffer, &index);
+printed_chars = format_reciever(format, f_list, arg_list);
 va_end(arg_list);
-
-if (index > 0)
-write(1, buffer, index);
 
 return (printed_chars);
 }
