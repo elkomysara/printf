@@ -10,6 +10,8 @@
 * @index: The current index in the buffer
 * Return: A total count of the characters printed
 */
+#include "main.h"
+
 int format_reciever(const char *format, conver_t f_list[], va_list arg_list, char *buffer, int *index)
 {
 int i, j, printed_chars = 0;
@@ -19,16 +21,16 @@ for (i = 0; format[i] != '\0'; i++)
 {
 if (format[i] == '%')
 {
-for (j = 0; f_list[j].sym != NULL; j++)
+for (j = 0; f_list[j].specifier != NULL; j++)
 {
-if (format[i + 1] == f_list[j].sym[0])
+if (format[i + 1] == f_list[j].specifier[0])
 {
 func = f_list[j].f;
 printed_chars += func(arg_list, buffer, index);
 break;
 }
 }
-if (f_list[j].sym == NULL && format[i + 1] != ' ')
+if (f_list[j].specifier == NULL && format[i + 1] != ' ')
 {
 _putchar(format[i], buffer, index);
 _putchar(format[i + 1], buffer, index);
@@ -45,3 +47,4 @@ printed_chars++;
 
 return (printed_chars);
 }
+

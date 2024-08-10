@@ -1,53 +1,38 @@
 #include "main.h"
-#include <stdarg.h>
-#include <limits.h>
 
-/**
-* print_int - Prints an integer.
-* @list: List of arguments.
-* @buffer: The buffer to store the formatted output.
-* @index: The current index in the buffer.
-*
-* Return: The number of characters printed.
-*/
-int print_int(va_list list, char *buffer, int *index)
+int print_integer(va_list list, char *buffer, int *index)
 {
-int num = va_arg(list, int);
-char buffer_temp[12];
-int i = 0, len = 0, negative = 0;
+    int n = va_arg(list, int);
+    int num_chars = 0;
 
-if (num == INT_MIN)
-{
-_putchar('-', buffer, index);
-_putchar('2', buffer, index);
-num = 147483648; /* INT_MIN = -2147483648, so we need to handle 147483648 */
-negative = 2; /*  Count '-' and '2' */
-}
-else if (num < 0)
-{
-_putchar('-', buffer, index);
-num = -num;
-negative = 1;
+    if (n == 0)
+    {
+        _putchar('0', buffer, index);
+        return (1);
+    }
+
+    if (n < 0)
+    {
+        _putchar('-', buffer, index);
+        num_chars++;
+        n = -n;
+    }
+
+    num_chars += print_number(n, buffer, index);
+
+    return (num_chars);
 }
 
-if (num == 0)
+int print_number(int n, char *buffer, int *index)
 {
-_putchar('0', buffer, index);
-return (1);
-}
+    int num_chars = 0;
+    unsigned int num = n;
 
-while (num != 0)
-{
-buffer_temp[i++] = (num % 10) + '0';
-num /= 10;
-}
+    if (num / 10)
+        num_chars += print_number(num / 10, buffer, index);
 
-len = i;
-while (i--)
-{
-_putchar(buffer_temp[i], buffer, index);
-len++;
-}
+    _putchar((num % 10) + '0', buffer, index);
+    num_chars++;
 
-return (len + negative);
+    return (num_chars);
 }
