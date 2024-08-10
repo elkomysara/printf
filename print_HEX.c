@@ -9,8 +9,8 @@ int print_HEX(va_list list)
 {
 unsigned int num = va_arg(list, unsigned int);
 char buffer[12];
-int i = 0, len = 0;
-
+int i = 0;
+int len;
 if (num == 0)
 {
 _putchar('0');
@@ -23,8 +23,10 @@ buffer[i++] = (num % 16) + (num % 16 < 10 ? '0' : 'A' - 10);
 num /= 16;
 }
 
+len = i;
+
 while (i--)
 _putchar(buffer[i]);
 
-return (len + i + 1);
+return (len);
 }
