@@ -28,6 +28,8 @@ conver_t f_list[] = {
 {NULL, NULL}
 };
 
+if (format == NULL)
+return (-1);
 
 va_start(arg_list, format);
 printed_chars = format_reciever(format, f_list, arg_list, buffer, &index);

@@ -4,9 +4,10 @@
 #include <stdarg.h>
 #include <unistd.h>
 
-typedef struct converter {
-    char *specifier;
-    int (*f)(va_list, char *, int *);
+typedef struct converter
+{
+char *specifier;
+int (*f)(va_list, char *, int *);
 } conver_t;
 int _printf(const char *format, ...);
 int _putchar(char c, char *buffer, int *index);
