@@ -5,8 +5,6 @@
 * @list: list of arguments
 * Return: Will return the amount of characters printed.
 */
-
-
 int print_string(va_list list)
 {
 int i;
