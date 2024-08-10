@@ -34,7 +34,8 @@ va_start(arg_list, format);
 printed_chars = format_reciever(format, f_list, arg_list, buffer, &index);
 va_end(arg_list);
 
-flush_buffer(buffer, &index);  /* Flush the buffer at the end */
+buffer[index] = '\0';
+write(1, buffer, index);
 
 return (printed_chars);
 }
