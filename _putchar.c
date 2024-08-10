@@ -1,14 +1,21 @@
-#include <unistd.h>
+#include "main.h"
 
 /**
-* _putchar - writes a character to stdout
-* @c: character to write
+* _putchar - Writes a character to the buffer, and flushes the buffer if full.
+* @c: The character to write
+* @buffer: The buffer to write to
+* @index: The current index in the buffer
 *
-* Return: On success 1.
-* On error, -1 is returned, and errno is set appropriately.
+* Return: 1 on success, -1 on error.
 */
-
-int _putchar(char c)
+int _putchar(char c, char *buffer, int *index)
 {
-return (write(1, &c, 1));
+if (*index >= 1024)
+{
+write(1, buffer, *index);
+*index = 0;
+}
+buffer[*index] = c;
+(*index)++;
+return (1);
 }

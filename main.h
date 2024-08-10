@@ -14,23 +14,23 @@
 struct convert
 {
 char *sym;
-int (*f)(va_list);
+int (*f)(va_list, char *, int *);
 };
 typedef struct convert conver_t;
 
 int _printf(const char *format, ...);
-int _putchar(char c);
-int _puts(char *str);
-int format_reciever(const char *format, conver_t f_list[], va_list arg_list);
-int print_percent(va_list);
-int print_char(va_list);
-int print_string(va_list);
-int print_int(va_list);
-int print_binary(va_list list);
+int _putchar(char c, char *buffer, int *index);
+int _puts(char *str, char *buffer, int *index);
+int format_reciever(const char *format, conver_t f_list[], va_list arg_list, char *buffer, int *index);
+int print_percent(va_list, char *buffer, int *index);
+int print_char(va_list, char *buffer, int *index);
+int print_string(va_list, char *buffer, int *index);
+int print_int(va_list, char *buffer, int *index);
+int print_binary(va_list, char *buffer, int *index);
 char *convert_to_binary(unsigned int num);
-int print_unsigned(va_list list);
-int print_octal(va_list list);
-int print_hex(va_list list);
-int print_HEX(va_list list);
+int print_unsigned(va_list, char *buffer, int *index);
+int print_octal(va_list, char *buffer, int *index);
+int print_hex(va_list, char *buffer, int *index);
+int print_HEX(va_list, char *buffer, int *index);
 
 #endif /* MAIN_H */
