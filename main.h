@@ -5,6 +5,7 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <stdarg.h>
+#include <limits.h>
 
 /**
 * struct convert - defines a structure for symbols and functions
@@ -24,5 +25,6 @@ int format_reciever(const char *format, conver_t f_list[], va_list arg_list);
 int print_percent(va_list);
 int print_char(va_list);
 int print_string(va_list);
+int print_int(va_list);
 
 #endif /* MAIN_H */
