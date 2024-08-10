@@ -6,7 +6,6 @@
 * @format: A string containing all the desired characters
 * Return: A total count of the characters printed
 */
-
 int _printf(const char *format, ...)
 {
 va_list arg_list;
@@ -18,8 +17,8 @@ conver_t f_list[] = {
 {"%", print_percent},
 {"c", print_char},
 {"s", print_string},
-{"d", print_integer},
-{"i", print_integer},
+{"d", print_int},
+{"i", print_int},
 {"b", print_binary},
 {"u", print_unsigned},
 {"o", print_octal},
@@ -27,6 +26,9 @@ conver_t f_list[] = {
 {"X", print_HEX},
 {NULL, NULL}
 };
+
+if (format == NULL)
+return (-1);
 
 va_start(arg_list, format);
 printed_chars = format_reciever(format, f_list, arg_list, buffer, &index);
@@ -37,4 +39,3 @@ write(1, buffer, index);
 
 return (printed_chars);
 }
-
