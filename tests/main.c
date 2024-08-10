@@ -22,5 +22,10 @@ len1 = _printf("%c\n", 'A');
 len2 = printf("%c\n", 'A');
 printf("Returned: _printf: %d, printf: %d\n", len1, len2);
 
+/* Testing unknown specifier */
+len1 = _printf("Unknown: [%r]\n");
+len2 = printf("Unknown: [%%r]\n");
+printf("Returned: _printf: %d, printf: %d\n", len1, len2);
+
 return (0);
 }

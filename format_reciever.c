@@ -29,8 +29,8 @@ break;
 }
 if (!found)
 {
-_putchar(format[i]);
-_putchar(format[i + 1]);
+_putchar(format[i]);   /* print the % */
+_putchar(format[i + 1]); /* print the unknown specifier */
 printed_chars += 2;
 i++;
 }
