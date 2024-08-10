@@ -15,7 +15,11 @@ conver_t f_list[] = {
 {"s", print_string},
 {"d", print_int},
 {"i", print_int},
-{"b", print_binary},  /* Add the 'b' specifier here */
+{"b", print_binary},
+{"u", print_unsigned},  /* Add the 'u' specifier here */
+{"o", print_octal},     /* Add the 'o' specifier here */
+{"x", print_hex},       /* Add the 'x' specifier here */
+{"X", print_HEX},       /* Add the 'X' specifier here */
 {NULL, NULL},
 };
 va_list arg_list;
