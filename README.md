@@ -25,3 +25,4 @@ To compile the project, run:
 ```sh
 gcc -Wall -Werror -Wextra -pedantic -std=gnu89 -Wno-format *.c tests/main.c -o printf
 # zero_day
+# zero_day
